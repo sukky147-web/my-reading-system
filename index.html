@@ -759,17 +759,18 @@ function initTokenClient() {
     tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: CLIENT_ID,
       scope: SCOPES,
-      callback: (resp) => {
+      callback: async (resp) => {
         if (resp.error) {
-          hide('loading');
-          show('login-screen');
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('login-screen').style.display = 'flex';
           return;
         }
         accessToken = resp.access_token;
-        hide('login-screen');
-        show('app');
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
         loadUserProfile();
-        loadAllData();
+        await loadAllData();
+        renderAll();
       }
     });
   }
@@ -812,8 +813,6 @@ async function loadAllData() {
       FILE_IDS.reading  ? loadFile('reading',  FILE_IDS.reading)  : Promise.resolve(),
     ]);
   } catch(e) { console.error(e); }
-  hide('loading');
-  renderAll();
 }
 
 async function loadFile(type, fileId) {
