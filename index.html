@@ -752,7 +752,9 @@ window.onload = () => {
   const saved = sessionStorage.getItem('gtoken');
   if (saved) {
     accessToken = saved;
-    showApp();
+    hide('login-screen');
+    show('app');
+    loadUserProfile();
     loadAllData();
   } else {
     hide('loading');
@@ -800,7 +802,6 @@ async function loadUserProfile() {
 
 // ── Data Loading ──
 async function loadAllData() {
-  show('loading');
   try {
     await Promise.all([
       loadFile('philosophy', FILE_IDS.philosophy),
