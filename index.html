@@ -6,7 +6,129 @@
 <title>我的读书系统</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer>
+// ── Quick Entry Modal ──
+function openModal() {
+  // Populate books datalist
+  const dl = document.getElementById('books-list');
+  dl.innerHTML = '';
+  if (data.philosophy?.books_read) {
+    data.philosophy.books_read.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b;
+      dl.appendChild(opt);
+    });
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('q-highlight').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('save-status').textContent = '';
+  // Clear fields
+  ['q-book','q-highlight','q-resonance','q-application','q-page'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('btn-save').disabled = false;
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+async function saveEntry() {
+  const highlight = document.getElementById('q-highlight').value.trim();
+  if (!highlight) {
+    document.getElementById('save-status').textContent = '⚠️ 请填写 Highlight';
+    return;
+  }
+
+  const btn = document.getElementById('btn-save');
+  const status = document.getElementById('save-status');
+  btn.disabled = true;
+  btn.textContent = '保存中…';
+
+  const entry = {
+    id: Date.now() + '_' + Math.random().toString(36).slice(2,6),
+    book: document.getElementById('q-book').value.trim() || '未知书目',
+    page: document.getElementById('q-page').value.trim(),
+    quote_or_idea: highlight,
+    resonance: document.getElementById('q-resonance').value.trim(),
+    personal_application: document.getElementById('q-application').value.trim(),
+    user_reaction: document.getElementById('q-reaction').value,
+    value_tag: document.getElementById('q-tag').value,
+    date: new Date().toISOString().split('T')[0],
+  };
+
+  try {
+    // Load fresh copy of philosophy file
+    const r = await fetch(
+      `https://www.googleapis.com/drive/v3/files/${FILE_IDS.philosophy}?alt=media`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    const phil = await r.json();
+
+    // Append entry
+    phil.entries.push(entry);
+    phil.last_updated = entry.date;
+
+    // Update books_read
+    if (!phil.books_read.includes(entry.book)) {
+      phil.books_read.push(entry.book);
+    }
+
+    // Update profile_summary for this tag
+    if (phil.entries.filter(e => e.value_tag === entry.value_tag).length === 1) {
+      phil.profile_summary[entry.value_tag] = entry.personal_application || entry.quote_or_idea;
+    }
+
+    // Write back to Drive (multipart upload to update existing file)
+    const metadata = { name: 'my-philosophy' };
+    const body = JSON.stringify(phil);
+    const boundary = 'boundary_xyz';
+    const multipart = `--${boundary}
+Content-Type: application/json
+
+${JSON.stringify(metadata)}
+--${boundary}
+Content-Type: application/json
+
+${body}
+--${boundary}--`;
+
+    const uploadResp = await fetch(
+      `https://www.googleapis.com/upload/drive/v3/files/${FILE_IDS.philosophy}?uploadType=multipart`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': `multipart/related; boundary=${boundary}`,
+        },
+        body: multipart,
+      }
+    );
+
+    if (!uploadResp.ok) throw new Error('Upload failed: ' + uploadResp.status);
+
+    // Update local data and re-render
+    data.philosophy = phil;
+    renderAll();
+
+    status.textContent = '✅ 已保存到 Google Drive';
+    btn.textContent = '保存到档案';
+
+    setTimeout(() => closeModal(), 1200);
+
+  } catch(e) {
+    console.error(e);
+    status.textContent = '❌ 保存失败，请重试';
+    btn.textContent = '保存到档案';
+    btn.disabled = false;
+  }
+}
+
+</script>
 <style>
   :root {
     --ink: #1a1814;
@@ -618,6 +740,145 @@
     .login-card { width: 90%; padding: 28px 24px; }
     .login-logo h1 { font-size: 36px; }
   }
+
+  /* ── FAB + Quick Entry Modal ── */
+  .fab {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(196,98,45,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 200;
+  }
+  .fab:hover { transform: scale(1.08); box-shadow: 0 6px 24px rgba(196,98,45,0.45); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,24,20,0.4);
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 0;
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.15s ease; }
+
+  .modal {
+    background: var(--paper-card);
+    border-radius: 20px 20px 0 0;
+    padding: 28px 28px 40px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.25s ease;
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 3px;
+    background: var(--border-strong);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  .modal-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .field {
+    margin-bottom: 14px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-family: var(--mono);
+    margin-bottom: 6px;
+  }
+
+  .field input, .field textarea, .field select {
+    width: 100%;
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+    transition: border 0.15s;
+    resize: none;
+  }
+
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-color: var(--accent);
+  }
+
+  .field textarea { min-height: 72px; line-height: 1.6; }
+
+  .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .btn-save {
+    flex: 1;
+    padding: 12px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-save:hover { background: #b05525; }
+  .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-cancel {
+    padding: 12px 20px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ink-muted);
+    cursor: pointer;
+  }
+
+  .save-status {
+    font-size: 12px;
+    color: var(--accent-green);
+    font-family: var(--mono);
+    margin-top: 8px;
+    min-height: 18px;
+    text-align: center;
+  }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -731,11 +992,82 @@
       </div>
     </div>
   </main>
+
+<!-- FAB -->
+<button class="fab" onclick="openModal()" title="快速记录">+</button>
+
+<!-- Quick Entry Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">快速记录洞见</div>
+
+    <div class="field">
+      <label>书名</label>
+      <input id="q-book" type="text" placeholder="底层逻辑 — 刘润" list="books-list">
+      <datalist id="books-list"></datalist>
+    </div>
+
+    <div class="field">
+      <label>Highlight · 原文或核心观点</label>
+      <textarea id="q-highlight" placeholder="把让你印象深刻的那句话写在这里…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Resonance · 为什么击中你</label>
+      <textarea id="q-resonance" placeholder="这让我想到了…  /  这解释了…  /  我一直有这种感觉但说不清…"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Application · 你怎么用</label>
+      <textarea id="q-application" placeholder="具体场景是…  /  下次遇到X我会…"></textarea>
+    </div>
+
+    <div class="modal-row">
+      <div class="field">
+        <label>页码（选填）</label>
+        <input id="q-page" type="text" placeholder="p.165">
+      </div>
+      <div class="field">
+        <label>价值领域</label>
+        <select id="q-tag">
+          <option value="个人成长">🌱 个人成长</option>
+          <option value="思维方式">🧠 思维方式</option>
+          <option value="对错观">⚖️ 对错观</option>
+          <option value="人际边界">🔲 人际边界</option>
+          <option value="社会协作">🤝 社会协作</option>
+          <option value="商业逻辑">💡 商业逻辑</option>
+          <option value="人生选择">🧭 人生选择</option>
+          <option value="财富观">💎 财富观</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-row">
+      <div class="field">
+        <label>我的态度</label>
+        <select id="q-reaction">
+          <option value="agree">✅ 认同</option>
+          <option value="partially agree">🤔 部分认同</option>
+          <option value="disagree">❌ 不认同</option>
+          <option value="want to test">🔬 想验证</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn-save" id="btn-save" onclick="saveEntry()">保存到档案</button>
+    </div>
+    <div class="save-status" id="save-status"></div>
+  </div>
+</div>
+
 </div>
 
 <script>
 const CLIENT_ID = '982878152406-b8anluip0bj1f8jj75ncg076m7g6gsv3.apps.googleusercontent.com';
-const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/drive.file';
 
 const FILE_IDS = {
   philosophy: '1XHmw17iOj0M1AeGpkpzSSLdSRxC6MLwa',
@@ -974,6 +1306,128 @@ function priorityClass(p) {
   if (p.includes('中')) return 'priority-medium';
   return 'priority-low';
 }
+
+// ── Quick Entry Modal ──
+function openModal() {
+  // Populate books datalist
+  const dl = document.getElementById('books-list');
+  dl.innerHTML = '';
+  if (data.philosophy?.books_read) {
+    data.philosophy.books_read.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b;
+      dl.appendChild(opt);
+    });
+  }
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('q-highlight').focus();
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('save-status').textContent = '';
+  // Clear fields
+  ['q-book','q-highlight','q-resonance','q-application','q-page'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('btn-save').disabled = false;
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+async function saveEntry() {
+  const highlight = document.getElementById('q-highlight').value.trim();
+  if (!highlight) {
+    document.getElementById('save-status').textContent = '⚠️ 请填写 Highlight';
+    return;
+  }
+
+  const btn = document.getElementById('btn-save');
+  const status = document.getElementById('save-status');
+  btn.disabled = true;
+  btn.textContent = '保存中…';
+
+  const entry = {
+    id: Date.now() + '_' + Math.random().toString(36).slice(2,6),
+    book: document.getElementById('q-book').value.trim() || '未知书目',
+    page: document.getElementById('q-page').value.trim(),
+    quote_or_idea: highlight,
+    resonance: document.getElementById('q-resonance').value.trim(),
+    personal_application: document.getElementById('q-application').value.trim(),
+    user_reaction: document.getElementById('q-reaction').value,
+    value_tag: document.getElementById('q-tag').value,
+    date: new Date().toISOString().split('T')[0],
+  };
+
+  try {
+    // Load fresh copy of philosophy file
+    const r = await fetch(
+      `https://www.googleapis.com/drive/v3/files/${FILE_IDS.philosophy}?alt=media`,
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+    const phil = await r.json();
+
+    // Append entry
+    phil.entries.push(entry);
+    phil.last_updated = entry.date;
+
+    // Update books_read
+    if (!phil.books_read.includes(entry.book)) {
+      phil.books_read.push(entry.book);
+    }
+
+    // Update profile_summary for this tag
+    if (phil.entries.filter(e => e.value_tag === entry.value_tag).length === 1) {
+      phil.profile_summary[entry.value_tag] = entry.personal_application || entry.quote_or_idea;
+    }
+
+    // Write back to Drive (multipart upload to update existing file)
+    const metadata = { name: 'my-philosophy' };
+    const body = JSON.stringify(phil);
+    const boundary = 'boundary_xyz';
+    const multipart = `--${boundary}
+Content-Type: application/json
+
+${JSON.stringify(metadata)}
+--${boundary}
+Content-Type: application/json
+
+${body}
+--${boundary}--`;
+
+    const uploadResp = await fetch(
+      `https://www.googleapis.com/upload/drive/v3/files/${FILE_IDS.philosophy}?uploadType=multipart`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': `multipart/related; boundary=${boundary}`,
+        },
+        body: multipart,
+      }
+    );
+
+    if (!uploadResp.ok) throw new Error('Upload failed: ' + uploadResp.status);
+
+    // Update local data and re-render
+    data.philosophy = phil;
+    renderAll();
+
+    status.textContent = '✅ 已保存到 Google Drive';
+    btn.textContent = '保存到档案';
+
+    setTimeout(() => closeModal(), 1200);
+
+  } catch(e) {
+    console.error(e);
+    status.textContent = '❌ 保存失败，请重试';
+    btn.textContent = '保存到档案';
+    btn.disabled = false;
+  }
+}
+
 </script>
 </body>
 </html>
