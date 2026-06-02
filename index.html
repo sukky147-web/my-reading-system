@@ -749,29 +749,23 @@ let activeTagFilter = 'all';
 
 // ── Boot ──
 window.onload = () => {
-  const saved = sessionStorage.getItem('gtoken');
-  if (saved) {
-    accessToken = saved;
-    hide('login-screen');
-    show('app');
-    loadUserProfile();
-    loadAllData();
-  } else {
-    hide('loading');
-    show('login-screen');
-  }
+  // Try silent token refresh first
+  hide('loading');
+  show('login-screen');
 };
 
-// ── Auth ──
-function signIn() {
+function initTokenClient() {
   if (!tokenClient) {
     tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: CLIENT_ID,
       scope: SCOPES,
       callback: (resp) => {
-        if (resp.error) return;
+        if (resp.error) {
+          hide('loading');
+          show('login-screen');
+          return;
+        }
         accessToken = resp.access_token;
-        sessionStorage.setItem('gtoken', accessToken);
         hide('login-screen');
         show('app');
         loadUserProfile();
@@ -779,11 +773,20 @@ function signIn() {
       }
     });
   }
-  tokenClient.requestAccessToken();
+  return tokenClient;
+}
+
+// ── Auth ──
+function signIn() {
+  initTokenClient().requestAccessToken({prompt: 'select_account'});
+}
+
+function silentSignIn() {
+  initTokenClient().requestAccessToken({prompt: ''});
 }
 
 function signOut() {
-  sessionStorage.removeItem('gtoken');
+  google.accounts.oauth2.revoke(accessToken, () => {});
   accessToken = null;
   hide('app');
   show('login-screen');
@@ -952,13 +955,6 @@ function switchTab(name, btn) {
 }
 
 // ── Show app (already authed) ──
-function showApp() {
-  hide('loading');
-  hide('login-screen');
-  show('app');
-  loadUserProfile();
-}
-
 // ── Helpers ──
 function show(id) { document.getElementById(id).style.display = ''; }
 function hide(id) { document.getElementById(id).style.display = 'none'; }
