@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的读书系统</title>
+<title>My Reading System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://accounts.google.com/gsi/client" async defer>
@@ -40,14 +40,14 @@ function closeModalOutside(e) {
 async function saveEntry() {
   const highlight = document.getElementById('q-highlight').value.trim();
   if (!highlight) {
-    document.getElementById('save-status').textContent = '⚠️ 请填写 Highlight';
+    document.getElementById('save-status').textContent = '⚠️ Please fill in the highlight';
     return;
   }
 
   const btn = document.getElementById('btn-save');
   const status = document.getElementById('save-status');
   btn.disabled = true;
-  btn.textContent = '保存中…';
+  btn.textContent = 'Saving…';
 
   const entry = {
     id: Date.now() + '_' + Math.random().toString(36).slice(2,6),
@@ -115,15 +115,15 @@ ${body}
     data.philosophy = phil;
     renderAll();
 
-    status.textContent = '✅ 已保存到 Google Drive';
-    btn.textContent = '保存到档案';
+    status.textContent = '✅ ✅ Saved to Google Drive';
+    btn.textContent = 'Save to archive';
 
     setTimeout(() => closeModal(), 1200);
 
   } catch(e) {
     console.error(e);
-    status.textContent = '❌ 保存失败，请重试';
-    btn.textContent = '保存到档案';
+    status.textContent = '❌ Save failed, please retry';
+    btn.textContent = 'Save to archive';
     btn.disabled = false;
   }
 }
@@ -149,7 +149,7 @@ ${body}
     --shadow-lg: 0 8px 32px rgba(26,24,20,0.12);
     --serif: 'Instrument Serif', 'Noto Serif SC', serif;
     --mono: 'DM Mono', monospace;
-    --sans: 'Noto Serif SC', serif;
+    --sans: 'Instrument Serif', Georgia, serif;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -885,22 +885,22 @@ ${body}
 
 <!-- Loading -->
 <div id="loading">
-  <div class="loading-text">读取中…</div>
+  <div class="loading-text">Loading…</div>
   <div class="loading-bar"></div>
 </div>
 
 <!-- Login -->
 <div id="login-screen" style="display:none;">
   <div class="login-logo">
-    <div class="en">Personal Reading System</div>
-    <h1>我的读书系统</h1>
-    <p class="sub">知识沉淀 · 哲学生长</p>
+    <div class="en">PERSONAL READING SYSTEM</div>
+    <h1>My Reading System</h1>
+    <p class="sub">Knowledge compounds. Philosophy grows.</p>
   </div>
   <div class="login-card">
-    <p>用 Google 账号登录，<br>读取你存在 Google Drive 的哲学档案。</p>
+    <p>Sign in with Google to load<br>your philosophy archive from Drive.</p>
     <button class="google-btn" onclick="signIn()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#fff" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#fff" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#fff" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/><path fill="#fff" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
-      使用 Google 账号登录
+      Continue with Google
     </button>
   </div>
 </div>
@@ -910,19 +910,19 @@ ${body}
   <header>
     <div style="display:flex;align-items:center;gap:20px;">
       <div class="header-brand">
-        我的读书系统
-        <span>Beta</span>
+        My Reading System
+        <span>BETA</span>
       </div>
       <nav>
-        <button class="active" onclick="switchTab('philosophy', this)">哲学档案</button>
-        <button onclick="switchTab('glossary', this)">术语库</button>
-        <button onclick="switchTab('reading', this)">推荐书单</button>
+        <button class="active" onclick="switchTab('philosophy', this)">Philosophy</button>
+        <button onclick="switchTab('glossary', this)">Glossary</button>
+        <button onclick="switchTab('reading', this)">Reading List</button>
       </nav>
     </div>
     <div class="header-user">
       <img class="avatar" id="user-avatar" src="" alt="avatar">
       <span id="user-name"></span>
-      <button onclick="signOut()" style="background:none;border:none;font-size:12px;color:var(--ink-muted);cursor:pointer;margin-left:4px;">退出</button>
+      <button onclick="signOut()" style="background:none;border:none;font-size:12px;color:var(--ink-muted);cursor:pointer;margin-left:4px;">Sign out</button>
     </div>
   </header>
 
@@ -930,34 +930,34 @@ ${body}
     <!-- Stats -->
     <div class="stats">
       <div class="stat-card">
-        <div class="stat-label">洞见总数</div>
+        <div class="stat-label">INSIGHTS</div>
         <div class="stat-value" id="stat-entries">0</div>
-        <div class="stat-sub">条记录</div>
+        <div class="stat-sub">recorded</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">术语数量</div>
+        <div class="stat-label">TERMS</div>
         <div class="stat-value" id="stat-terms">0</div>
-        <div class="stat-sub">个词条</div>
+        <div class="stat-sub">entries</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">推荐书单</div>
+        <div class="stat-label">Reading List</div>
         <div class="stat-value" id="stat-books">0</div>
-        <div class="stat-sub">本待读</div>
+        <div class="stat-sub">to read</div>
       </div>
     </div>
 
     <!-- Philosophy Tab -->
     <div id="tab-philosophy" class="tab active">
       <div class="section-header">
-        <div class="section-title">哲学档案</div>
+        <div class="section-title">Philosophy</div>
         <div class="section-meta" id="phil-updated"></div>
       </div>
       <div class="filter-bar" id="phil-filters"></div>
       <div class="entries-grid" id="entries-container">
         <div class="empty">
           <div class="empty-icon">∅</div>
-          <h3>还没有洞见</h3>
-          <p>在 Claude 里和书对谈，说"记录"<br>就会自动出现在这里。</p>
+          <h3>No insights yet</h3>
+          <p>Chat with books in Claude, say "记录"<br>and insights will appear here.</p>
         </div>
       </div>
     </div>
@@ -965,14 +965,14 @@ ${body}
     <!-- Glossary Tab -->
     <div id="tab-glossary" class="tab">
       <div class="section-header">
-        <div class="section-title">术语库</div>
+        <div class="section-title">Glossary</div>
         <div class="section-meta" id="gloss-count"></div>
       </div>
       <div id="glossary-container">
         <div class="empty">
           <div class="empty-icon">α</div>
-          <h3>术语库还是空的</h3>
-          <p>讨论书中概念时，Claude 会自动<br>整理中英文术语到这里。</p>
+          <h3>Glossary is empty</h3>
+          <p>Claude will populate this as you<br>discuss concepts from your books.</p>
         </div>
       </div>
     </div>
@@ -980,14 +980,14 @@ ${body}
     <!-- Reading List Tab -->
     <div id="tab-reading" class="tab">
       <div class="section-header">
-        <div class="section-title">推荐书单</div>
+        <div class="section-title">Reading List</div>
         <div class="section-meta" id="reading-count"></div>
       </div>
       <div class="book-list" id="reading-container">
         <div class="empty">
           <div class="empty-icon">📚</div>
-          <h3>书单还是空的</h3>
-          <p>Claude 会根据你的阅读内容<br>推荐相关书目到这里。</p>
+          <h3>Reading list is empty</h3>
+          <p>Claude will recommend books here<br>based on what you're reading.</p>
         </div>
       </div>
     </div>
@@ -1000,64 +1000,64 @@ ${body}
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div class="modal-title">快速记录洞见</div>
+    <div class="modal-title">Quick Capture</div>
 
     <div class="field">
-      <label>书名</label>
+      <label>Book</label>
       <input id="q-book" type="text" placeholder="底层逻辑 — 刘润" list="books-list">
       <datalist id="books-list"></datalist>
     </div>
 
     <div class="field">
       <label>Highlight · 原文或核心观点</label>
-      <textarea id="q-highlight" placeholder="把让你印象深刻的那句话写在这里…"></textarea>
+      <textarea id="q-highlight" placeholder="The sentence or idea that struck you…"></textarea>
     </div>
 
     <div class="field">
       <label>Resonance · 为什么击中你</label>
-      <textarea id="q-resonance" placeholder="这让我想到了…  /  这解释了…  /  我一直有这种感觉但说不清…"></textarea>
+      <textarea id="q-resonance" placeholder="This reminds me of…  /  This explains why…  /  I always felt this but couldn't articulate it…"></textarea>
     </div>
 
     <div class="field">
       <label>Application · 你怎么用</label>
-      <textarea id="q-application" placeholder="具体场景是…  /  下次遇到X我会…"></textarea>
+      <textarea id="q-application" placeholder="In a specific situation…  /  Next time I face X I will…"></textarea>
     </div>
 
     <div class="modal-row">
       <div class="field">
-        <label>页码（选填）</label>
+        <label>Page (optional)</label>
         <input id="q-page" type="text" placeholder="p.165">
       </div>
       <div class="field">
-        <label>价值领域</label>
+        <label>Value domain</label>
         <select id="q-tag">
-          <option value="个人成长">🌱 个人成长</option>
-          <option value="思维方式">🧠 思维方式</option>
-          <option value="对错观">⚖️ 对错观</option>
-          <option value="人际边界">🔲 人际边界</option>
-          <option value="社会协作">🤝 社会协作</option>
-          <option value="商业逻辑">💡 商业逻辑</option>
-          <option value="人生选择">🧭 人生选择</option>
-          <option value="财富观">💎 财富观</option>
+          <option value="Personal Growth">🌱 Personal Growth</option>
+          <option value="Thinking Patterns">🧠 Thinking Patterns</option>
+          <option value="Right & Wrong">⚖️ Right & Wrong</option>
+          <option value="Boundaries">🔲 Boundaries</option>
+          <option value="Social Cooperation">🤝 Social Cooperation</option>
+          <option value="Business Logic">💡 Business Logic</option>
+          <option value="Life Choices">🧭 Life Choices</option>
+          <option value="Wealth & Money">💎 Wealth & Money</option>
         </select>
       </div>
     </div>
 
     <div class="modal-row">
       <div class="field">
-        <label>我的态度</label>
+        <label>My stance</label>
         <select id="q-reaction">
-          <option value="agree">✅ 认同</option>
-          <option value="partially agree">🤔 部分认同</option>
-          <option value="disagree">❌ 不认同</option>
-          <option value="want to test">🔬 想验证</option>
+          <option value="agree">✅ Agree</option>
+          <option value="partially agree">🤔 Partially agree</option>
+          <option value="disagree">❌ Disagree</option>
+          <option value="want to test">🔬 Want to test</option>
         </select>
       </div>
     </div>
 
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal()">取消</button>
-      <button class="btn-save" id="btn-save" onclick="saveEntry()">保存到档案</button>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" id="btn-save" onclick="saveEntry()">Save to archive</button>
     </div>
     <div class="save-status" id="save-status"></div>
   </div>
@@ -1070,7 +1070,7 @@ const CLIENT_ID = '982878152406-b8anluip0bj1f8jj75ncg076m7g6gsv3.apps.googleuser
 const SCOPES = 'https://www.googleapis.com/auth/drive';
 
 const FILE_IDS = {
-  philosophy: '1XHmw17iOj0M1AeGpkpzSSLdSRxC6MLwa',
+  philosophy: '1Qpv4SmT76OGomo4cD8wsUpFk2fZ9GpoM',
   glossary:   '1dLHfVsmn5DFxUX-HlZTyA0a5p4bfKkz0',
   reading:    '1Zlq7mOmDG4hPSl4ltossGUcFwaBiQX9R',
 };
@@ -1185,13 +1185,13 @@ function renderPhilosophy() {
   if (!phil?.entries?.length) return;
 
   const updated = phil.last_updated
-    ? `最后更新 ${phil.last_updated}` : '';
+    ? `Last updated ${phil.last_updated}` : '';
   document.getElementById('phil-updated').textContent = updated;
 
   // Build tag filters
   const tags = [...new Set(phil.entries.map(e => e.value_tag).filter(Boolean))];
   const filterBar = document.getElementById('phil-filters');
-  filterBar.innerHTML = `<button class="filter-btn ${activeTagFilter==='all'?'active':''}" onclick="filterTag('all')">全部</button>` +
+  filterBar.innerHTML = `<button class="filter-btn ${activeTagFilter==='all'?'active':''}" onclick="filterTag('all')">All</button>` +
     tags.map(t => `<button class="filter-btn ${activeTagFilter===t?'active':''}" onclick="filterTag('${t}')">${t}</button>`).join('');
 
   const filtered = activeTagFilter === 'all'
@@ -1200,7 +1200,7 @@ function renderPhilosophy() {
 
   const container = document.getElementById('entries-container');
   if (!filtered.length) {
-    container.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><h3>没有这个分类的记录</h3></div>`;
+    container.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><h3>No entries in this category</h3></div>`;
     return;
   }
 
@@ -1229,7 +1229,7 @@ function renderGlossary() {
   if (!gloss?.categories) return;
 
   const total = countTerms();
-  document.getElementById('gloss-count').textContent = `${total} 个词条`;
+  document.getElementById('gloss-count').textContent = `${total} entries`;
 
   const container = document.getElementById('glossary-container');
   const cats = Object.entries(gloss.categories).filter(([,terms]) => terms.length > 0);
@@ -1256,7 +1256,7 @@ function renderReadingList() {
   const reading = data.reading;
   if (!reading?.books?.length) return;
 
-  document.getElementById('reading-count').textContent = `${reading.books.length} 本`;
+  document.getElementById('reading-count').textContent = `${reading.books.length} books`;
 
   const container = document.getElementById('reading-container');
   container.innerHTML = reading.books.map((b, i) => `
@@ -1297,8 +1297,8 @@ function reactionClass(r) {
            disagree:'reaction-disagree', 'want to test':'reaction-test' }[r] || 'reaction-test';
 }
 function reactionLabel(r) {
-  return { agree:'认同', 'partially agree':'部分认同',
-           disagree:'不认同', 'want to test':'待验证' }[r] || r || '';
+  return { agree: 'Agree', 'partially agree':'Partial',
+           disagree:'Disagree', 'want to test':'Testing' }[r] || r || '';
 }
 function priorityClass(p) {
   if (!p) return '';
@@ -1340,14 +1340,14 @@ function closeModalOutside(e) {
 async function saveEntry() {
   const highlight = document.getElementById('q-highlight').value.trim();
   if (!highlight) {
-    document.getElementById('save-status').textContent = '⚠️ 请填写 Highlight';
+    document.getElementById('save-status').textContent = '⚠️ Please fill in the highlight';
     return;
   }
 
   const btn = document.getElementById('btn-save');
   const status = document.getElementById('save-status');
   btn.disabled = true;
-  btn.textContent = '保存中…';
+  btn.textContent = 'Saving…';
 
   const entry = {
     id: Date.now() + '_' + Math.random().toString(36).slice(2,6),
@@ -1415,15 +1415,15 @@ ${body}
     data.philosophy = phil;
     renderAll();
 
-    status.textContent = '✅ 已保存到 Google Drive';
-    btn.textContent = '保存到档案';
+    status.textContent = '✅ ✅ Saved to Google Drive';
+    btn.textContent = 'Save to archive';
 
     setTimeout(() => closeModal(), 1200);
 
   } catch(e) {
     console.error(e);
-    status.textContent = '❌ 保存失败，请重试';
-    btn.textContent = '保存到档案';
+    status.textContent = '❌ Save failed, please retry';
+    btn.textContent = 'Save to archive';
     btn.disabled = false;
   }
 }
