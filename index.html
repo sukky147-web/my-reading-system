@@ -1446,7 +1446,11 @@ async function saveEntry() {
 }
 
 /* ── Helpers ── */
-function show(id) { document.getElementById(id).style.display = ''; }
+function show(id) {
+  const el = document.getElementById(id);
+  if (id === 'app') el.style.display = 'block';
+  else el.style.display = '';
+}
 function hide(id) { document.getElementById(id).style.display = 'none'; }
 function esc(s) {
   return String(s)
