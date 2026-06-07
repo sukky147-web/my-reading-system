@@ -112,7 +112,7 @@
   font-display: swap;
 }
 </style>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- Google OAuth removed — now using Notion API via Vercel -->
 <style>
 
 /* ─────────────────────────────────────────────
@@ -1217,89 +1217,44 @@ main {
 </div>
 
 <script>
-const CLIENT_ID = '982878152406-b8anluip0bj1f8jj75ncg076m7g6gsv3.apps.googleusercontent.com';
-const SCOPES    = 'https://www.googleapis.com/auth/drive';
+// ── Notion-powered, no login required ──
+// Data flows: Notion DB → /api/notion (Vercel) → this page
 
-const FILE_IDS = {
-  philosophy: '1Qpv4SmT76OGomo4cD8wsUpFk2fZ9GpoM',
-  glossary:   '1dLHfVsmn5DFxUX-HlZTyA0a5p4bfKkz0',
-  reading:    '1Zlq7mOmDG4hPSl4ltossGUcFwaBiQX9R',
-};
+const API = '/api/notion';
 
-let tokenClient, accessToken = null;
-let data = { philosophy: null, glossary: null, reading: null };
+let data = { entries: [] };
 let activeTagFilter = 'all';
 
 /* ── Boot ── */
-window.onload = () => {
+window.onload = async () => {
+  hide('login-screen');
   hide('loading');
-  show('login-screen');
+  show('app');
+  document.getElementById('user-name').textContent = 'My Archive';
+  await loadAllData();
+  renderAll();
 };
-
-function initTokenClient() {
-  if (!tokenClient) {
-    tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: CLIENT_ID,
-      scope: SCOPES,
-      callback: async (resp) => {
-        if (resp.error) {
-          document.getElementById('login-screen').style.display = 'flex';
-          return;
-        }
-        accessToken = resp.access_token;
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-        loadUserProfile();
-        await loadAllData();
-        renderAll();
-      }
-    });
-  }
-  return tokenClient;
-}
-
-function signIn() { initTokenClient().requestAccessToken({ prompt: 'select_account' }); }
-
-function signOut() {
-  if (accessToken) google.accounts.oauth2.revoke(accessToken, () => {});
-  accessToken = null;
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-}
-
-async function loadUserProfile() {
-  try {
-    const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-    const u = await r.json();
-    document.getElementById('user-name').textContent = u.name || u.email || '';
-    if (u.picture) document.getElementById('user-avatar').src = u.picture;
-  } catch(e) {}
-}
 
 /* ── Data ── */
 async function loadAllData() {
+  show('loading');
   try {
-    await Promise.all([
-      loadFile('philosophy', FILE_IDS.philosophy),
-      loadFile('glossary',   FILE_IDS.glossary),
-      loadFile('reading',    FILE_IDS.reading),
-    ]);
-  } catch(e) { console.error('loadAllData:', e); }
+    const r = await fetch(API);
+    if (!r.ok) throw new Error(r.status);
+    const json = await r.json();
+    data.entries = json.entries || [];
+    // derive books_read list from entries
+    data.books_read = [...new Set(data.entries.map(e => e.book).filter(Boolean))];
+  } catch(e) {
+    console.error('loadAllData:', e);
+    data.entries = [];
+  } finally {
+    hide('loading');
+  }
 }
 
-async function loadFile(type, fileId) {
-  if (!fileId) return;
-  try {
-    const r = await fetch(
-      `https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-    if (!r.ok) { console.warn(type, r.status); return; }
-    data[type] = await r.json();
-  } catch(e) { console.error('loadFile', type, e); }
-}
+function signIn()  { /* no-op — no login needed */ }
+function signOut() { /* no-op */ }
 
 /* ── Render ── */
 function renderAll() {
@@ -1310,28 +1265,24 @@ function renderAll() {
 }
 
 function renderStats() {
-  const entries = data.philosophy?.entries?.length || 0;
-  const terms   = countTerms();
-  const books   = data.reading?.books?.length || 0;
+  const entries = data.entries?.length || 0;
+  const books   = data.books_read?.length || 0;
+  const tags    = new Set(data.entries?.map(e => e.value_tag).filter(Boolean)).size || 0;
   document.getElementById('stat-entries').textContent = entries;
-  document.getElementById('stat-terms').textContent   = terms;
+  document.getElementById('stat-terms').textContent   = tags;
   document.getElementById('stat-books').textContent   = books;
 }
 
-function countTerms() {
-  if (!data.glossary?.categories) return 0;
-  return Object.values(data.glossary.categories).reduce((n, arr) => n + arr.length, 0);
-}
+function countTerms() { return 0; }
 
 function renderPhilosophy() {
-  const phil = data.philosophy;
-  if (!phil?.entries?.length) return;
+  const entries = data.entries || [];
+  if (!entries.length) return;
 
-  if (phil.last_updated) {
-    document.getElementById('phil-updated').textContent = 'last updated ' + phil.last_updated;
-  }
+  document.getElementById('phil-updated').textContent =
+    entries[0]?.date ? 'last updated ' + entries[0].date : '';
 
-  const tags = [...new Set(phil.entries.map(e => e.value_tag).filter(Boolean))];
+  const tags = [...new Set(entries.map(e => e.value_tag).filter(Boolean))];
   const bar  = document.getElementById('phil-filters');
   bar.innerHTML =
     `<button class="filter-btn ${activeTagFilter==='all'?'active':''}" onclick="filterTag('all')">All</button>` +
@@ -1340,8 +1291,8 @@ function renderPhilosophy() {
     ).join('');
 
   const filtered = activeTagFilter === 'all'
-    ? phil.entries
-    : phil.entries.filter(e => e.value_tag === activeTagFilter);
+    ? entries
+    : entries.filter(e => e.value_tag === activeTagFilter);
 
   const c = document.getElementById('entries-container');
   if (!filtered.length) {
@@ -1349,17 +1300,21 @@ function renderPhilosophy() {
     return;
   }
 
-  c.innerHTML = [...filtered].reverse().map(e => `
+  c.innerHTML = filtered.map(e => `
     <div class="entry-card">
       <div class="entry-top">
-        <div class="entry-quote">${esc(e.quote_or_idea || '')}</div>
-        <span class="entry-reaction ${rcls(e.user_reaction)}">${rlbl(e.user_reaction)}</span>
+        <div class="entry-quote">${esc(e.quote_or_idea || e.title || '')}</div>
       </div>
+      ${e.resonance
+        ? `<div class="entry-application" style="font-style:italic;color:var(--slate);">${esc(e.resonance)}</div>` : ''}
       ${e.personal_application
         ? `<div class="entry-application">${esc(e.personal_application)}</div>` : ''}
+      ${e.question
+        ? `<div class="entry-application" style="color:var(--stone);font-size:13px;">Q: ${esc(e.question)}</div>` : ''}
       <div class="entry-meta">
         ${e.value_tag ? `<span class="tag">${esc(e.value_tag)}</span>` : ''}
         <span class="entry-source">${esc(e.book||'')}${e.page?' · '+e.page:''}${e.date?' · '+e.date:''}</span>
+        ${e.notion_url ? `<a href="${e.notion_url}" target="_blank" style="font-size:11px;color:var(--muted);text-decoration:none;margin-left:auto;">↗ Notion</a>` : ''}
       </div>
     </div>
   `).join('');
@@ -1425,7 +1380,7 @@ function switchTab(name, btn) {
 function openModal() {
   const dl = document.getElementById('books-list');
   dl.innerHTML = '';
-  (data.philosophy?.books_read || []).forEach(b => {
+  (data.books_read || []).forEach(b => {
     const o = document.createElement('option'); o.value = b; dl.appendChild(o);
   });
   document.getElementById('modal-overlay').classList.add('open');
@@ -1453,56 +1408,33 @@ async function saveEntry() {
     document.getElementById('save-status').textContent = '⚠ Please fill in the highlight';
     return;
   }
-  const btn = document.getElementById('btn-save');
+  const btn    = document.getElementById('btn-save');
   const status = document.getElementById('save-status');
   btn.disabled = true;
   btn.textContent = 'Saving…';
 
   const entry = {
-    id:   Date.now() + '_' + Math.random().toString(36).slice(2,6),
-    book: document.getElementById('q-book').value.trim() || 'Unknown',
-    page: document.getElementById('q-page').value.trim(),
-    quote_or_idea: highlight,
-    resonance:     document.getElementById('q-resonance').value.trim(),
+    title:                document.getElementById('q-highlight').value.trim().slice(0, 80),
+    book:                 document.getElementById('q-book').value.trim() || 'Unknown',
+    page:                 document.getElementById('q-page').value.trim(),
+    quote_or_idea:        highlight,
+    resonance:            document.getElementById('q-resonance').value.trim(),
     personal_application: document.getElementById('q-application').value.trim(),
-    user_reaction: document.getElementById('q-reaction').value,
-    value_tag:     document.getElementById('q-tag').value,
-    date: new Date().toISOString().split('T')[0],
+    value_tag:            document.getElementById('q-tag').value,
+    date:                 new Date().toISOString().split('T')[0],
   };
 
   try {
-    const r = await fetch(
-      `https://www.googleapis.com/drive/v3/files/${FILE_IDS.philosophy}?alt=media`,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-    const phil = await r.json();
-    phil.entries.push(entry);
-    phil.last_updated = entry.date;
-    if (!phil.books_read.includes(entry.book)) phil.books_read.push(entry.book);
-    if (!phil.profile_summary[entry.value_tag]) {
-      phil.profile_summary[entry.value_tag] = entry.personal_application || entry.quote_or_idea;
-    }
-
-    const boundary = 'cp_boundary_' + Date.now();
-    const body = JSON.stringify(phil);
-    const mp = `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify({name:'my-philosophy'})}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${boundary}--`;
-
-    const up = await fetch(
-      `https://www.googleapis.com/upload/drive/v3/files/${FILE_IDS.philosophy}?uploadType=multipart`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': `multipart/related; boundary=${boundary}`,
-        },
-        body: mp,
-      }
-    );
-    if (!up.ok) throw new Error(up.status);
-
-    data.philosophy = phil;
+    const r = await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(entry),
+    });
+    if (!r.ok) throw new Error(r.status);
+    // refresh data from Notion
+    await loadAllData();
     renderAll();
-    status.textContent = '✓ saved to drive';
+    status.textContent = '✓ saved to Notion';
     btn.textContent = 'Save to archive';
     setTimeout(closeModal, 1200);
   } catch(e) {
