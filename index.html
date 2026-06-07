@@ -28,12 +28,11 @@ nav {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:28px 48px;
-  border-bottom:0.5px solid rgba(26,23,20,0.10);
+  padding:14px 48px;
 }
 .nav-wordmark {
   font-family:var(--display);
-  font-size:40px;
+  font-size:28px;
   font-weight:400;
   color:var(--ink);
   line-height:1;
@@ -46,7 +45,7 @@ nav {
 }
 .nav-links a {
   font-family:var(--sans);
-  font-size:20px;
+  font-size:16px;
   font-weight:600;
   color:var(--ink-2);
   text-decoration:none;
@@ -56,78 +55,80 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  padding:96px 48px 80px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:16px;
-  text-align:center;
+  min-height: calc(100vh - 57px);
+  padding: 64px 48px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  text-align: center;
 }
 .hero-headline {
-  font-family:var(--display);
-  font-size:96px;
-  font-weight:400;
-  line-height:0.85;
-  color:var(--ink);
+  font-family: var(--display);
+  font-size: 96px;
+  font-weight: 400;
+  line-height: 0.85;
+  color: var(--ink);
 }
-.hero-headline span { color:var(--ink-2); }
+.hero-headline span { color: var(--ink-2); }
 .hero-sub {
-  font-family:var(--sans);
-  font-size:20px;
-  font-weight:600;
-  letter-spacing:0.48px;
-  line-height:28px;
-  color:var(--ink-2);
-  max-width:680px;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.48px;
+  line-height: 26px;
+  color: var(--ink-2);
+  max-width: 800px;
+  margin-top: 14px;
 }
 
 /* ── STATS (horizontal row) ── */
 .stats-wrap {
-  display:flex;
-  flex-direction:row;
-  align-items:stretch;
-  gap:0;
-  margin-top:8px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 14px;
 }
 .stat-cell {
-  padding:36px 64px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:6px;
-  border-right:0.5px solid rgba(26,23,20,0.14);
+  padding: 16px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-right: 0.5px solid rgba(26,23,20,0.14);
 }
-.stat-cell:last-child { border-right:none; }
+.stat-cell:last-child { border-right: none; }
 .stat-num {
-  font-family:var(--sans);
-  font-size:48px;
-  font-weight:500;
-  line-height:48px;
-  color:var(--ink);
-  display:block;
-  min-width:2ch;
-  text-align:center;
+  font-family: var(--sans);
+  font-size: 48px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--ink);
+  display: block;
+  min-width: 2ch;
+  text-align: center;
 }
 .stat-label {
-  font-family:var(--sans);
-  font-size:14px;
-  font-weight:400;
-  letter-spacing:1.8px;
-  color:var(--ink-2);
-  white-space:nowrap;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1.8px;
+  color: var(--ink-2);
+  white-space: nowrap;
 }
 
-/* ── ILLUSTRATION PLACEHOLDER ── */
+/* ── ILLUSTRATION ── */
 .hero-illustration {
-  width:804px;
-  max-width:100%;
-  height:450px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  margin-top:16px;
-  position:relative;
+  width: 804px;
+  height: 450px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-top: 12px;
 }
 .hero-illustration img {
   width:100%;
@@ -333,6 +334,23 @@ nav {
 @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 .anim { animation:fadeUp 0.4s ease both; }
+
+/* ── HERO TEXT ENTRANCE ── */
+.hero-headline { visibility: hidden; }
+.hero-sub {
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 0.75em;
+  background: var(--ink);
+  margin-left: 3px;
+  vertical-align: middle;
+  animation: blink 0.8s step-end infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 </style>
 </head>
 <body>
@@ -352,8 +370,8 @@ nav {
 
 <!-- HERO -->
 <div class="hero">
-  <h1 class="hero-headline">A life of <span>reading.</span></h1>
-  <p class="hero-sub">Every book leaves a trace. This is where those traces live: highlights,<br>resonances, questions that won't go away.</p>
+  <h1 class="hero-headline" id="hero-headline"></h1>
+  <p class="hero-sub" id="hero-sub">Every book leaves a trace. This is where those traces live: highlights,<br>resonances, questions that won't go away.</p>
 
   <!-- STATS -->
   <div class="stats-wrap">
@@ -374,8 +392,7 @@ nav {
   <!-- ILLUSTRATION -->
   <div class="hero-illustration" id="hero-illus">
     <img src="illustration.png" alt="Reading character illustration" id="illus-img"
-      onload="document.getElementById('illus-placeholder').style.display='none'"
-      onerror="this.style.display='none'">
+      onload="document.getElementById('illus-placeholder').style.display='none'">
     <div class="placeholder-box" id="illus-placeholder">
       <span>illustration.png</span>
       <span class="ph-size">804 × 450</span>
@@ -484,6 +501,7 @@ let data = { entries:[], glossary:[], reading:[], review:[] };
 let activeTag = 'all';
 
 window.onload = async () => {
+  typeHeadline();
   await loadAll();
   renderAll();
   document.getElementById('loading').style.display = 'none';
@@ -678,6 +696,39 @@ async function saveEntry() {
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function emptyHTML() {
   return `<div class="empty"><div class="empty-glyph">∅</div><p class="empty-label">No entries yet</p></div>`;
+}
+
+/* ── TYPEWRITER: headline only ── */
+function typeHeadline() {
+  const el = document.getElementById('hero-headline');
+  el.style.visibility = 'visible';
+
+  const segments = [
+    { text: 'A life of ', tag: null },
+    { text: 'reading.', tag: 'span' },
+  ];
+
+  const cursor = document.createElement('span');
+  cursor.className = 'cursor';
+  el.appendChild(cursor);
+
+  let segIdx = 0, charIdx = 0, currentNode = null;
+
+  function tick() {
+    if (segIdx >= segments.length) { cursor.remove(); return; }
+    const seg = segments[segIdx];
+    if (charIdx === 0) {
+      currentNode = seg.tag === 'span' ? document.createElement('span') : null;
+      if (currentNode) el.insertBefore(currentNode, cursor);
+    }
+    const char = seg.text[charIdx];
+    if (currentNode) currentNode.textContent += char;
+    else el.insertBefore(document.createTextNode(char), cursor);
+    charIdx++;
+    if (charIdx >= seg.text.length) { segIdx++; charIdx = 0; }
+    setTimeout(tick, 85 + (Math.random() * 30 - 15));
+  }
+  tick();
 }
 </script>
 </body>
