@@ -97,9 +97,7 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  border-right: 0.5px solid rgba(26,23,20,0.14);
 }
-.stat-cell:last-child { border-right: none; }
 .stat-num {
   font-family: var(--sans);
   font-size: 48px;
@@ -337,10 +335,8 @@ nav {
 
 /* ── HERO TEXT ENTRANCE ── */
 .hero-headline { visibility: hidden; }
-.hero-sub {
-  opacity: 0;
-  animation: fadeUp 0.7s ease 0.4s both;
-}
+.hero-sub { opacity: 0; }
+.stats-wrap { opacity: 0; }
 .cursor {
   display: inline-block;
   width: 2px;
@@ -542,9 +538,12 @@ function renderStats() {
     { id:'stat-terms',   val: data.glossary.length || 0 },
     { id:'stat-books',   val: (data.books_read||[]).length || 0 },
   ];
+  // headline ~16 chars × 85ms ≈ 1360ms + 120 sub delay + 400 stats delay = ~1900ms
+  const statsDelay = 1900;
   targets.forEach(({ id, val }, i) => {
     const el = document.getElementById(id);
-    setTimeout(() => animateCount(el, val, 900), i * 120);
+    el.textContent = '0';
+    setTimeout(() => animateCount(el, val, 900), statsDelay + i * 120);
   });
 }
 
@@ -628,9 +627,10 @@ function switchNav(name, el) {
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   el.classList.add('active');
   activateTab(name);
-  document.querySelectorAll('.pill').forEach(p=>{
+  document.querySelectorAll('.pill[data-tab]').forEach(p=>{
     p.classList.toggle('active', p.dataset.tab===name);
   });
+  document.querySelector('.tab-section').scrollIntoView({ behavior:'smooth' });
 }
 
 function switchPill(name, btn) {
@@ -715,7 +715,31 @@ function typeHeadline() {
   let segIdx = 0, charIdx = 0, currentNode = null;
 
   function tick() {
-    if (segIdx >= segments.length) { cursor.remove(); return; }
+    if (segIdx >= segments.length) {
+      cursor.remove();
+      // sub fadeUp
+      setTimeout(() => {
+        const sub = document.getElementById('hero-sub');
+        sub.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        sub.style.transform = 'translateY(10px)';
+        sub.style.opacity = '0';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          sub.style.opacity = '1';
+          sub.style.transform = 'translateY(0)';
+        }));
+        // stats fadeUp after sub
+        setTimeout(() => {
+          const stats = document.querySelector('.stats-wrap');
+          stats.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          stats.style.transform = 'translateY(10px)';
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            stats.style.opacity = '1';
+            stats.style.transform = 'translateY(0)';
+          }));
+        }, 400);
+      }, 120);
+      return;
+    }
     const seg = segments[segIdx];
     if (charIdx === 0) {
       currentNode = seg.tag === 'span' ? document.createElement('span') : null;
