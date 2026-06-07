@@ -4,1200 +4,463 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commonplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=DM+Mono:wght@300;400&family=DM+Serif+Display:ital@0;1&family=Dokdo&display=swap" rel="stylesheet">
 <style>
-/* ── Season Font Family ── */
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-RegularItalic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-MediumItalic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSerif';
-  src: url('font/SeasonSerif-TRIAL-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-RegularItalic.ttf') format('truetype');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-LightItalic.ttf') format('truetype');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonMix';
-  src: url('font/SeasonMix-TRIAL-SemiBold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSans';
-  src: url('font/SeasonSans-TRIAL-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'SeasonSans';
-  src: url('font/SeasonSans-TRIAL-Medium.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-</style>
-<!-- Google OAuth removed — now using Notion API via Vercel -->
-<style>
-
-/* ─────────────────────────────────────────────
-   COMMONPLACE DESIGN SYSTEM
-   Notion structure × aged-parchment soul
-   ───────────────────────────────────────────── */
-
 :root {
-  /* ── Parchment Surface ── */
-  --canvas:        #F5ECD7;   /* aged parchment — primary surface */
-  --canvas-deep:   #E8D5B0;   /* darker parchment — cards, inputs */
-  --surface:       #EDE0C4;   /* mid-tone — section backgrounds */
-  --surface-soft:  #F8F2E6;   /* lightest — subtle divisions */
-
-  /* ── Hairlines ── */
-  --hairline:        rgba(93,68,38,0.14);
-  --hairline-soft:   rgba(93,68,38,0.08);
-  --hairline-strong: rgba(93,68,38,0.28);
-
-  /* ── Ink (brown-blacks, not pure black) ── */
-  --ink:       #2C1810;   /* dark walnut — primary text */
-  --charcoal:  #3D2B1F;   /* warm charcoal — body emphasis */
-  --slate:     #6B4E37;   /* aged leather — secondary text */
-  --steel:     #8B6B52;   /* weathered oak — tertiary */
-  --stone:     #A8896E;   /* worn stone — muted labels */
-  --muted:     #C4A882;   /* faded sepia — disabled */
-
-  /* ── Brand Primary — forest moss ── */
-  --primary:         #3B5E3A;   /* deep moss green */
-  --primary-pressed: #2D4A2C;
-  --primary-deep:    #213620;
-  --on-primary:      #F5ECD7;   /* parchment on green */
-
-  /* ── Accent — iron gall ink rust ── */
-  --accent:      #7A3B1E;   /* iron-gall rust */
-  --accent-soft: #F0DBC8;
-
-  /* ── Organic Tints (muted, aged versions of Notion card tints) ── */
-  --tint-peach:    #EDD5BC;
-  --tint-rose:     #E8CCCC;
-  --tint-mint:     #C8D9C4;
-  --tint-lavender: #CEC8D8;
-  --tint-sky:      #C4D4E0;
-  --tint-yellow:   #E8DCAC;
-  --tint-cream:    #EDE4CC;
-  --tint-sage:     #C8D0BC;
-
-  /* ── Semantic ── */
-  --success: #3B5E3A;
-  --warning: #7A3B1E;
-  --error:   #7A2020;
-
-  /* ── On dark (for hero band) ── */
-  --on-dark:       #F5ECD7;
-  --on-dark-muted: #C4A882;
-
-  /* ── Typography ── */
-  --serif: 'SeasonSerif', 'Georgia', serif;
-  --body:  'SeasonMix', 'Georgia', serif;
-  --mono:  'SeasonSans', 'DM Mono', 'Courier New', monospace;
-
-  /* ── Notion spacing scale (preserved exactly) ── */
-  --space-xxs: 4px;
-  --space-xs:  8px;
-  --space-sm:  12px;
-  --space-md:  16px;
-  --space-lg:  20px;
-  --space-xl:  24px;
-  --space-xxl: 32px;
-  --space-xxxl:40px;
-  --section-sm:48px;
-  --section:   64px;
-  --section-lg:96px;
-
-  /* ── Notion border radius scale (preserved) ── */
-  --r-xs:   4px;
-  --r-sm:   6px;
-  --r-md:   8px;
-  --r-lg:   12px;
-  --r-xl:   16px;
-  --r-xxl:  20px;
-  --r-full: 9999px;
-
-  /* ── Elevation (warm shadows, not cold grey) ── */
-  --shadow-xs: 0 1px 2px rgba(44,24,16,0.06);
-  --shadow-sm: 0 2px 8px rgba(44,24,16,0.08);
-  --shadow-md: 0 4px 16px rgba(44,24,16,0.10);
-  --shadow-lg: 0 8px 32px rgba(44,24,16,0.13);
-  --shadow-hero: rgba(44,24,16,0.20) 0px 24px 48px -8px;
-
-  /* ── Texture overlay (subtle paper grain) ── */
-  --grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  --bg:      #EAE9E6;
+  --ink:     #1A1714;
+  --ink-2:   #5A524A;
+  --ink-3:   #9E9188;
+  --rule:    rgba(26,23,20,0.10);
+  --yellow:  #ECCA53;
+  --sans:    'DM Sans', sans-serif;
+  --mono:    'DM Mono', monospace;
+  --serif:   'DM Serif Display', serif;
+  --display: 'Dokdo', cursive;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.6; min-height:100vh; -webkit-font-smoothing:antialiased; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  background: var(--canvas);
-  color: var(--ink);
-  font-family: var(--body);
-  font-size: 15px;
-  line-height: 1.7;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ── Grain texture overlay ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: var(--grain);
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 1;
-}
-
-/* ─────────────────────────────────────────────
-   LOADING
-   ───────────────────────────────────────────── */
-#loading {
-  position: fixed; inset: 0;
-  background: var(--canvas);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  z-index: 999;
-}
-
-.loading-wordmark {
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--slate);
-  letter-spacing: 0.08em;
-  font-style: italic;
-}
-
-.loading-bar {
-  width: 80px;
-  height: 1px;
-  background: var(--hairline);
-  position: relative;
-  overflow: hidden;
-}
-
-.loading-bar::after {
-  content: '';
-  position: absolute;
-  left: -40%;
-  top: 0;
-  width: 40%;
-  height: 100%;
-  background: var(--accent);
-  animation: slide 1.4s ease infinite;
-}
-
-/* ─────────────────────────────────────────────
-   LOGIN SCREEN
-   ───────────────────────────────────────────── */
-#login-screen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 48px;
-  background: var(--canvas);
-  position: relative;
-  overflow: hidden;
-}
-
-/* Decorative ring — like a tree's annual growth ring */
-#login-screen::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 700px; height: 700px;
-  border-radius: 50%;
-  border: 1px solid var(--hairline-soft);
-  pointer-events: none;
-}
-
-#login-screen::after {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 500px; height: 500px;
-  border-radius: 50%;
-  border: 1px solid var(--hairline-soft);
-  pointer-events: none;
-}
-
-.login-inner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  animation: fadeUp 0.9s ease both;
-}
-
-.login-eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--stone);
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.login-wordmark {
-  font-family: var(--serif);
-  font-size: 64px;
-  font-weight: 300;
-  color: var(--ink);
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  font-style: italic;
-  margin-bottom: 12px;
-}
-
-.login-tagline {
-  font-family: var(--body);
-  font-size: 15px;
-  color: var(--slate);
-  font-style: italic;
-  margin-bottom: 48px;
-}
-
-.login-card {
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  padding: 32px 36px;
-  text-align: center;
-  width: 340px;
-  box-shadow: var(--shadow-md);
-  animation: fadeUp 0.9s 0.15s ease both;
-}
-
-.login-card p {
-  font-size: 13px;
-  color: var(--slate);
-  margin-bottom: 20px;
-  line-height: 1.65;
-}
-
-.google-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 11px 18px;
-  background: var(--ink);
-  color: var(--on-dark);
-  border: none;
-  border-radius: var(--r-md);
-  font-family: var(--body);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 0.03em;
-}
-
-.google-btn:hover {
-  background: var(--charcoal);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-sm);
-}
-
-/* ─────────────────────────────────────────────
-   APP SHELL
-   ───────────────────────────────────────────── */
-#app { display: none; min-height: 100vh; }
-
-/* ── Header ── */
-header {
-  background: var(--canvas-deep);
-  border-bottom: 1px solid var(--hairline);
-  padding: 0 var(--space-xxl);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 56px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.header-brand {
-  font-family: var(--serif);
-  font-size: 19px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.header-beta {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--stone);
-  border: 1px solid var(--hairline-strong);
-  padding: 2px 6px;
-  border-radius: var(--r-xs);
-  font-style: normal;
-}
-
-/* ── Nav tabs — Notion segmented-tab style ── */
+/* ── NAV ── */
 nav {
-  display: flex;
-  gap: 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:28px 48px;
+  border-bottom:0.5px solid rgba(26,23,20,0.10);
+}
+.nav-wordmark {
+  font-family:var(--display);
+  font-size:40px;
+  font-weight:400;
+  color:var(--ink);
+  line-height:1;
+  white-space:nowrap;
+}
+.nav-links {
+  display:flex;
+  gap:36px;
+  list-style:none;
+}
+.nav-links a {
+  font-family:var(--sans);
+  font-size:20px;
+  font-weight:600;
+  color:var(--ink-2);
+  text-decoration:none;
+  transition:color 0.15s;
+}
+.nav-links a:hover, .nav-links a.active { color:var(--ink); }
+
+/* ── HERO ── */
+.hero {
+  padding:96px 48px 80px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  text-align:center;
+}
+.hero-headline {
+  font-family:var(--display);
+  font-size:96px;
+  font-weight:400;
+  line-height:0.85;
+  color:var(--ink);
+}
+.hero-headline span { color:var(--ink-2); }
+.hero-sub {
+  font-family:var(--sans);
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:0.48px;
+  line-height:28px;
+  color:var(--ink-2);
+  max-width:680px;
 }
 
-nav button {
-  background: none;
-  border: none;
-  border-bottom: 2px solid transparent;
-  padding: var(--space-sm) var(--space-md);
-  font-family: var(--body);
-  font-size: 13px;
-  color: var(--steel);
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
+/* ── STATS (horizontal row) ── */
+.stats-wrap {
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+  gap:0;
+  margin-top:8px;
 }
-
-nav button:hover { color: var(--ink); }
-nav button.active {
-  color: var(--ink);
-  border-bottom-color: var(--accent);
-  font-style: italic;
+.stat-cell {
+  padding:36px 64px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  border-right:0.5px solid rgba(26,23,20,0.14);
 }
-
-.header-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--stone);
+.stat-cell:last-child { border-right:none; }
+.stat-num {
+  font-family:var(--sans);
+  font-size:48px;
+  font-weight:500;
+  line-height:48px;
+  color:var(--ink);
+  display:block;
+  min-width:2ch;
+  text-align:center;
 }
-
-.avatar {
-  width: 26px; height: 26px;
-  border-radius: 50%;
-  background: var(--tint-cream);
-  border: 1px solid var(--hairline);
-  object-fit: cover;
-}
-
-.sign-out-btn {
-  background: none;
-  border: none;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-  cursor: pointer;
-  transition: color 0.15s;
-}
-.sign-out-btn:hover { color: var(--slate); }
-
-/* ─────────────────────────────────────────────
-   MAIN CONTENT
-   ───────────────────────────────────────────── */
-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--section-sm) var(--space-xxl) var(--section);
-}
-
-/* ── Stat strip — Notion stat-row style ── */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-md);
-  margin-bottom: var(--section-sm);
-}
-
-.stat-card {
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  padding: var(--space-lg) var(--space-xl);
-  animation: fadeUp 0.5s ease both;
-}
-.stat-card:nth-child(2) { animation-delay: 0.05s; }
-.stat-card:nth-child(3) { animation-delay: 0.10s; }
-
 .stat-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-bottom: var(--space-xs);
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:400;
+  letter-spacing:1.8px;
+  color:var(--ink-2);
+  white-space:nowrap;
 }
 
-.stat-value {
-  font-family: var(--serif);
-  font-size: 40px;
-  font-weight: 300;
-  color: var(--ink);
-  line-height: 1;
+/* ── ILLUSTRATION PLACEHOLDER ── */
+.hero-illustration {
+  width:804px;
+  max-width:100%;
+  height:450px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin-top:16px;
+  position:relative;
+}
+.hero-illustration img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  mix-blend-mode:darken;
+  display:block;
+}
+.hero-illustration .placeholder-box {
+  position:absolute;
+  inset:0;
+  border:1.5px dashed rgba(26,23,20,0.20);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.hero-illustration .placeholder-box span {
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:300;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(26,23,20,0.30);
+}
+.hero-illustration .placeholder-box .ph-size {
+  font-size:11px;
+  color:rgba(26,23,20,0.20);
 }
 
-.stat-sub {
-  font-family: var(--body);
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: var(--space-xxs);
-  font-style: italic;
+/* ── TAB SECTION ── */
+.tab-section {
+  padding:64px 48px 144px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:64px;
 }
 
-/* ── Section header ── */
-.section-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: var(--space-lg);
-  padding-bottom: var(--space-sm);
-  border-bottom: 1px solid var(--hairline-soft);
+/* ── PILLS ── */
+.pill-row {
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.pill {
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:600;
+  color:#000;
+  background:none;
+  border:0.5px solid #A3A3A3;
+  border-radius:99px;
+  padding:8px 24px;
+  cursor:pointer;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.pill:hover { border-color:var(--ink); }
+.pill.active {
+  background:var(--yellow);
+  border:1px solid #000;
+  color:#000;
 }
 
+/* ── SECTION TITLE ── */
 .section-title {
-  font-family: var(--serif);
-  font-size: 24px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink);
+  font-family:var(--display);
+  font-size:48px;
+  font-weight:400;
+  color:var(--ink);
+  line-height:1.1;
+  max-width:480px;
 }
 
-.section-meta {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--stone);
-  letter-spacing: 0.06em;
+/* ── TAB PANELS ── */
+.tab-panel { display:none; width:100%; }
+.tab-panel.active { display:block; }
+
+/* ── ENTRIES ── */
+.entries { display:flex; flex-direction:column; }
+.entry {
+  display:grid;
+  grid-template-columns:120px 1fr 160px;
+  gap:0 48px;
+  padding:40px 0;
+  border-bottom:0.5px solid rgba(26,23,20,0.10);
+  align-items:start;
+}
+.entry:first-child { border-top:0.5px solid rgba(26,23,20,0.10); }
+.entry-tag { font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:8px; font-family:var(--mono); font-weight:300; }
+.entry-src { font-size:10px; color:var(--ink-3); line-height:1.6; font-family:var(--mono); font-weight:300; }
+.entry-quote { font-family:var(--serif); font-size:22px; font-style:italic; line-height:1.35; color:var(--ink); margin-bottom:16px; }
+.entry-body-text { font-size:13px; color:var(--ink-2); line-height:1.8; margin-bottom:10px; font-family:var(--mono); font-weight:300; }
+.entry-q { font-size:11px; color:var(--ink-3); font-style:italic; line-height:1.7; font-family:var(--mono); font-weight:300; }
+.entry-right { text-align:right; }
+.entry-date { font-size:10px; color:var(--ink-3); letter-spacing:0.06em; display:block; margin-bottom:12px; font-family:var(--mono); font-weight:300; }
+.entry-link { font-size:10px; letter-spacing:0.10em; text-transform:uppercase; color:var(--ink-3); text-decoration:none; border-bottom:0.5px solid rgba(26,23,20,0.18); padding-bottom:1px; transition:all 0.15s; font-family:var(--mono); font-weight:300; }
+.entry-link:hover { color:var(--ink); }
+
+/* ── GLOSSARY ── */
+.glossary-group { margin-bottom:48px; }
+.glossary-group-title { font-size:10px; letter-spacing:0.20em; text-transform:uppercase; color:var(--ink-3); margin-bottom:20px; padding-bottom:12px; border-bottom:0.5px solid rgba(26,23,20,0.10); font-family:var(--mono); font-weight:300; }
+.glossary-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(26,23,20,0.10); }
+.term-card { background:var(--bg); padding:28px; }
+.term-en { font-family:var(--serif); font-size:18px; font-style:italic; color:var(--ink); margin-bottom:4px; }
+.term-zh { font-size:11px; color:var(--ink-3); letter-spacing:0.08em; margin-bottom:12px; font-family:var(--mono); font-weight:300; }
+.term-def { font-size:11px; color:var(--ink-2); line-height:1.75; margin-bottom:10px; font-family:var(--mono); font-weight:300; }
+.term-src { font-size:10px; color:var(--ink-3); font-family:var(--mono); font-weight:300; }
+
+/* ── READING LIST ── */
+.book-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(26,23,20,0.10); }
+.book-card { background:var(--bg); padding:32px 28px; }
+.book-letter { font-family:var(--display); font-size:48px; color:rgba(26,23,20,0.14); line-height:1; margin-bottom:16px; }
+.book-title { font-family:var(--serif); font-size:17px; font-style:italic; line-height:1.3; color:var(--ink); margin-bottom:4px; }
+.book-zh { font-size:11px; color:var(--ink-3); margin-bottom:8px; font-family:var(--mono); font-weight:300; }
+.book-author { font-size:11px; color:var(--ink-3); margin-bottom:16px; font-family:var(--mono); font-weight:300; }
+.book-why { font-size:11px; color:var(--ink-2); line-height:1.75; margin-bottom:16px; font-family:var(--mono); font-weight:300; }
+.book-badges { display:flex; gap:6px; flex-wrap:wrap; }
+.badge { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-3); border:0.5px solid rgba(26,23,20,0.18); padding:3px 8px; font-family:var(--mono); font-weight:300; }
+.badge-reading { color:#2E4A2C; border-color:#2E4A2C; }
+.badge-high { color:var(--ink); border-color:var(--ink); }
+
+/* ── EMPTY ── */
+.empty { padding:95px 0; display:flex; flex-direction:column; align-items:center; gap:16px; }
+.empty-glyph { font-family:var(--serif); font-size:64px; font-style:italic; color:rgba(26,23,20,0.18); line-height:1; }
+.empty-label { font-family:var(--mono); font-size:11px; font-weight:300; letter-spacing:1.1px; text-transform:uppercase; color:var(--ink-3); }
+
+/* ── FOOTER IMAGE ── */
+.footer-bar {
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+.footer-img {
+  width:100%;
+  height:200px;
+  display:block;
+  object-fit:cover;
+}
+.footer-placeholder {
+  width:100%;
+  height:200px;
+  border-top:1.5px dashed rgba(26,23,20,0.20);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.footer-placeholder span {
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:300;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(26,23,20,0.30);
 }
 
-/* ── Tabs ── */
-.tab { display: none; }
-.tab.active { display: block; animation: fadeUp 0.35s ease both; }
+/* ── MODAL ── */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(26,23,20,0.55); z-index:1000; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--bg); width:580px; max-height:90vh; overflow-y:auto; border:0.5px solid rgba(26,23,20,0.18); }
+.modal-header { padding:36px 40px 0; margin-bottom:32px; border-bottom:0.5px solid rgba(26,23,20,0.10); }
+.modal-title { font-family:var(--display); font-size:36px; color:var(--ink); padding-bottom:20px; }
+.modal-body { padding:0 40px 40px; }
+.field { margin-bottom:24px; }
+.field label { display:block; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-3); margin-bottom:8px; font-family:var(--mono); font-weight:300; }
+.field input, .field textarea, .field select { width:100%; background:rgba(26,23,20,0.05); border:0.5px solid rgba(26,23,20,0.18); border-radius:0; padding:10px 14px; font-family:var(--mono); font-size:12px; font-weight:300; color:var(--ink); outline:none; transition:border-color 0.15s; appearance:none; }
+.field input:focus, .field textarea:focus, .field select:focus { border-color:var(--ink); }
+.field textarea { min-height:80px; resize:vertical; line-height:1.7; }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.modal-actions { display:flex; justify-content:space-between; align-items:center; padding-top:24px; border-top:0.5px solid rgba(26,23,20,0.10); }
+.btn-cancel { font-family:var(--mono); font-size:11px; font-weight:300; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-3); background:none; border:none; cursor:pointer; transition:color 0.15s; }
+.btn-cancel:hover { color:var(--ink); }
+.btn-save { font-family:var(--sans); font-size:11px; font-weight:600; color:#000; background:var(--yellow); border:1px solid #000; border-radius:99px; padding:10px 28px; cursor:pointer; transition:all 0.15s; }
+.btn-save:hover { opacity:0.85; }
+.btn-save:disabled { opacity:0.4; cursor:not-allowed; }
+.save-status { font-size:11px; color:#2E4A2C; letter-spacing:0.06em; margin-top:12px; text-align:right; font-family:var(--mono); font-weight:300; }
 
-/* ── Filter bar — Notion pill-tab style ── */
-.filter-bar {
-  display: flex;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-lg);
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  background: transparent;
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-full);
-  padding: var(--space-xxs) var(--space-md);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--steel);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.filter-btn:hover { border-color: var(--hairline-strong); color: var(--ink); }
-.filter-btn.active {
-  background: var(--ink);
-  color: var(--on-dark);
-  border-color: var(--ink);
-}
-
-/* ─────────────────────────────────────────────
-   ENTRY CARDS — Notion card-base style with parchment soul
-   ───────────────────────────────────────────── */
-.entries-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.entry-card {
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  padding: var(--space-xl) var(--space-xxl);
-  transition: box-shadow 0.2s, border-color 0.2s;
-}
-
-.entry-card:hover {
-  box-shadow: var(--shadow-sm);
-  border-color: var(--hairline-strong);
-}
-
-.entry-top {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-md);
-  margin-bottom: var(--space-sm);
-}
-
-.entry-quote {
-  font-family: var(--serif);
-  font-size: 18px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink);
-  line-height: 1.5;
-  flex: 1;
-}
-
-.entry-quote::before { content: '\201C'; color: var(--accent); margin-right: 1px; }
-.entry-quote::after  { content: '\201D'; color: var(--accent); margin-left: 1px; }
-
-/* ── Reaction badges — Notion badge style ── */
-.entry-reaction {
-  flex-shrink: 0;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  padding: 3px 9px;
-  border-radius: var(--r-sm);
-  white-space: nowrap;
-  text-transform: uppercase;
-}
-.reaction-agree    { background: var(--tint-mint);    color: var(--primary-deep); }
-.reaction-partial  { background: var(--tint-yellow);  color: #5a4200; }
-.reaction-disagree { background: var(--tint-rose);    color: var(--error); }
-.reaction-test     { background: var(--tint-lavender);color: #3a2880; }
-
-.entry-application {
-  font-family: var(--body);
-  font-size: 13px;
-  color: var(--slate);
-  margin-bottom: var(--space-sm);
-  padding-left: var(--space-md);
-  border-left: 2px solid var(--hairline-strong);
-  line-height: 1.65;
-}
-
-.entry-application::before {
-  content: '→ ';
-  color: var(--accent);
-  font-family: var(--mono);
-}
-
-.entry-meta {
-  display: flex;
-  gap: var(--space-sm);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* ── Tags — Notion badge-tag style ── */
-.tag {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: var(--r-xs);
-  background: var(--surface);
-  color: var(--steel);
-  border: 1px solid var(--hairline);
-}
-
-.entry-source {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--muted);
-}
-
-/* ─────────────────────────────────────────────
-   GLOSSARY
-   ───────────────────────────────────────────── */
-.glossary-category { margin-bottom: var(--space-xxl); }
-
-.cat-title {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: var(--space-sm);
-  padding-bottom: var(--space-xs);
-  border-bottom: 1px solid var(--hairline);
-}
-
-.glossary-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: var(--space-sm);
-}
-
-/* Notion card-base applied */
-.term-card {
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  padding: var(--space-md) var(--space-lg);
-  transition: box-shadow 0.2s;
-}
-.term-card:hover { box-shadow: var(--shadow-sm); }
-
-.term-en {
-  font-family: var(--mono);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-
-.term-zh {
-  font-family: var(--serif);
-  font-size: 16px;
-  font-style: italic;
-  color: var(--charcoal);
-  margin-bottom: var(--space-xs);
-}
-
-.term-def {
-  font-family: var(--body);
-  font-size: 12px;
-  color: var(--slate);
-  line-height: 1.55;
-}
-
-.term-source {
-  margin-top: var(--space-xs);
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--muted);
-}
-
-/* ─────────────────────────────────────────────
-   READING LIST
-   ───────────────────────────────────────────── */
-.book-list { display: flex; flex-direction: column; gap: var(--space-sm); }
-
-/* Notion card-feature style */
-.book-card {
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-lg);
-  padding: var(--space-lg) var(--space-xxl);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-lg);
-  transition: box-shadow 0.2s;
-}
-.book-card:hover { box-shadow: var(--shadow-sm); }
-
-.book-spine {
-  width: 32px;
-  height: 48px;
-  border-radius: 2px 3px 3px 2px;
-  background: var(--tint-cream);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  font-size: 17px;
-  font-style: italic;
-  color: var(--accent);
-  border: 1px solid var(--hairline);
-  border-left: 3px solid var(--accent);
-}
-
-.book-title {
-  font-family: var(--serif);
-  font-size: 17px;
-  font-style: italic;
-  color: var(--ink);
-  margin-bottom: 2px;
-}
-
-.book-author {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: var(--stone);
-  margin-bottom: var(--space-xs);
-}
-
-.book-why {
-  font-family: var(--body);
-  font-size: 13px;
-  color: var(--slate);
-  line-height: 1.6;
-  margin-bottom: var(--space-sm);
-}
-
-.book-tags {
-  display: flex;
-  gap: var(--space-xs);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.priority-high   { background: var(--tint-peach); color: var(--warning); border-color: transparent; }
-.priority-medium { background: var(--tint-yellow); color: #5a4200; border-color: transparent; }
-.status-unread   { background: var(--surface); color: var(--stone); }
-.status-reading  { background: var(--tint-mint); color: var(--primary-deep); }
-
-/* ─────────────────────────────────────────────
-   EMPTY STATES
-   ───────────────────────────────────────────── */
-.empty {
-  text-align: center;
-  padding: 80px var(--space-lg);
-  color: var(--muted);
-}
-
-.empty-glyph {
-  font-family: var(--serif);
-  font-size: 40px;
-  font-style: italic;
-  margin-bottom: var(--space-lg);
-  color: var(--hairline-strong);
-}
-
-.empty h3 {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-style: italic;
-  font-size: 20px;
-  color: var(--stone);
-  margin-bottom: var(--space-xs);
-}
-
-.empty p {
-  font-family: var(--body);
-  font-size: 13px;
-  line-height: 1.7;
-  color: var(--muted);
-}
-
-/* ─────────────────────────────────────────────
-   FAB + QUICK CAPTURE MODAL
-   ───────────────────────────────────────────── */
+/* ── FAB ── */
 .fab {
-  position: fixed;
-  bottom: var(--space-xxl);
-  right: var(--space-xxl);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--on-primary);
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(59,94,58,0.30);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  z-index: 200;
-  font-family: var(--serif);
-  font-style: italic;
+  position:fixed; bottom:40px; right:48px;
+  font-family:var(--sans); font-size:20px; font-weight:600;
+  color:#000; background:var(--yellow);
+  border:1px solid #000; border-radius:99px;
+  padding:14px 32px; cursor:pointer; z-index:100;
+  transform-origin:center center;
+  transition:transform 0.1s ease;
 }
-.fab:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 24px rgba(59,94,58,0.40);
+@keyframes tilt {
+  0%   { transform:rotate(0deg); }
+  25%  { transform:rotate(-6deg); }
+  75%  { transform:rotate(6deg); }
+  100% { transform:rotate(0deg); }
 }
+.fab:hover { animation:tilt 0.36s ease both; }
 
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(44,24,16,0.35);
-  z-index: 300;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-}
-.modal-overlay.open { display: flex; animation: fadeIn 0.15s ease; }
-
-.modal {
-  background: var(--canvas);
-  border-radius: var(--r-xl) var(--r-xl) 0 0;
-  padding: var(--space-xxl) var(--space-xxl) var(--section-sm);
-  width: 100%;
-  max-width: 600px;
-  box-shadow: var(--shadow-lg);
-  animation: slideUp 0.25s ease;
-  border-top: 1px solid var(--hairline);
-}
-
-.modal-handle {
-  width: 32px;
-  height: 3px;
-  background: var(--hairline-strong);
-  border-radius: 2px;
-  margin: 0 auto var(--space-lg);
-}
-
-.modal-title {
-  font-family: var(--serif);
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--ink);
-  margin-bottom: var(--space-lg);
-}
-
-/* ── Fields ── */
-.field { margin-bottom: var(--space-md); }
-
-.field label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--stone);
-  margin-bottom: var(--space-xxs);
-}
-
-.field input, .field textarea, .field select {
-  width: 100%;
-  background: var(--canvas-deep);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-md);
-  padding: var(--space-sm) var(--space-md);
-  font-family: var(--body);
-  font-size: 14px;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 0.15s;
-  resize: none;
-}
-.field input:focus, .field textarea:focus, .field select:focus {
-  border-color: var(--primary);
-}
-.field textarea { min-height: 68px; line-height: 1.6; }
-
-.modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
-
-.modal-actions { display: flex; gap: var(--space-sm); margin-top: var(--space-lg); }
-
-/* Notion button-primary style with Commonplace palette */
-.btn-save {
-  flex: 1;
-  padding: 11px var(--space-lg);
-  background: var(--primary);
-  color: var(--on-primary);
-  border: none;
-  border-radius: var(--r-md);
-  font-family: var(--body);
-  font-size: 14px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.btn-save:hover { background: var(--primary-pressed); }
-.btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
-
-/* Notion button-secondary style */
-.btn-cancel {
-  padding: 11px var(--space-lg);
-  background: transparent;
-  border: 1px solid var(--hairline-strong);
-  border-radius: var(--r-md);
-  font-family: var(--body);
-  font-size: 14px;
-  color: var(--slate);
-  cursor: pointer;
-  transition: border-color 0.15s;
-}
-.btn-cancel:hover { border-color: var(--steel); }
-
-.save-status {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--success);
-  margin-top: var(--space-sm);
-  min-height: 16px;
-  text-align: center;
-  letter-spacing: 0.04em;
-}
-
-/* ─────────────────────────────────────────────
-   ANIMATIONS
-   ───────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp {
-  from { transform: translateY(32px); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
-@keyframes slide {
-  0%   { left: -40%; }
-  100% { left: 100%; }
-}
-
-/* ─────────────────────────────────────────────
-   RESPONSIVE
-   ───────────────────────────────────────────── */
-@media (max-width: 640px) {
-  header { padding: 0 var(--space-md); }
-  main { padding: var(--space-xxl) var(--space-md) var(--section); }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .stats .stat-card:last-child { grid-column: span 2; }
-  .login-wordmark { font-size: 48px; }
-  .login-card { width: 90%; padding: 24px 20px; }
-  .modal { padding: var(--space-xl) var(--space-md) var(--space-xxxl); }
-  .modal-row { grid-template-columns: 1fr; }
-  .entry-card { padding: var(--space-md); }
-  .book-card { padding: var(--space-md); }
-}
+/* ── LOADING ── */
+#loading { position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:999; }
+.loading-word { font-family:var(--display); font-size:48px; color:var(--ink-3); animation:pulse 1.6s ease infinite; }
+@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.anim { animation:fadeUp 0.4s ease both; }
 </style>
 </head>
 <body>
 
-<!-- Loading -->
-<div id="loading">
-  <div class="loading-wordmark">Commonplace</div>
-  <div class="loading-bar"></div>
+<div id="loading"><span class="loading-word">reading...</span></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-wordmark">Commonplace</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active" onclick="switchNav('review',this);return false;">Today</a></li>
+    <li><a href="#" onclick="switchNav('philosophy',this);return false;">Archive</a></li>
+    <li><a href="#" onclick="switchNav('glossary',this);return false;">Glossary</a></li>
+    <li><a href="#" onclick="switchNav('reading',this);return false;">Reading</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1 class="hero-headline">A life of <span>reading.</span></h1>
+  <p class="hero-sub">Every book leaves a trace. This is where those traces live: highlights,<br>resonances, questions that won't go away.</p>
+
+  <!-- STATS -->
+  <div class="stats-wrap">
+    <div class="stat-cell">
+      <span class="stat-num" id="stat-entries">0</span>
+      <span class="stat-label">Insights archived</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num" id="stat-terms">0</span>
+      <span class="stat-label">Terms collected</span>
+    </div>
+    <div class="stat-cell">
+      <span class="stat-num" id="stat-books">0</span>
+      <span class="stat-label">Books read</span>
+    </div>
+  </div>
+
+  <!-- ILLUSTRATION -->
+  <div class="hero-illustration" id="hero-illus">
+    <img src="illustration.png" alt="Reading character illustration" id="illus-img"
+      onload="document.getElementById('illus-placeholder').style.display='none'"
+      onerror="this.style.display='none'">
+    <div class="placeholder-box" id="illus-placeholder">
+      <span>illustration.png</span>
+      <span class="ph-size">804 × 450</span>
+      <span>upload to github root</span>
+    </div>
+  </div>
 </div>
 
-<!-- Login -->
-<div id="login-screen" style="display:none;">
-  <div class="login-inner">
-    <div class="login-eyebrow">A personal reading companion</div>
-    <div class="login-wordmark">Commonplace</div>
-    <div class="login-tagline">Where books become beliefs.</div>
+<!-- TAB SECTION -->
+<div class="tab-section">
+
+  <!-- PILLS -->
+  <div class="pill-row">
+    <button class="pill active" data-tab="review" onclick="switchPill('review',this)">Today</button>
+    <button class="pill" data-tab="philosophy" onclick="switchPill('philosophy',this)">Archive</button>
+    <button class="pill" data-tab="glossary" onclick="switchPill('glossary',this)">Glossary</button>
+    <button class="pill" data-tab="reading" onclick="switchPill('reading',this)">Reading</button>
   </div>
-  <div class="login-card">
-    <p>Sign in to load your philosophy archive<br>from Google Drive.</p>
-    <button class="google-btn" onclick="signIn()">
-      <svg width="16" height="16" viewBox="0 0 18 18"><path fill="#fff" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#fff" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#fff" d="M3.964 10.71c-.18-.54-.282-1.117-.282-1.71s.102-1.17.282-1.71V4.958H.957C.347 6.173 0 7.548 0 9s.348 2.827.957 4.042l3.007-2.332z"/><path fill="#fff" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
-      Continue with Google
-    </button>
+
+  <!-- TODAY -->
+  <div id="tab-review" class="tab-panel active">
+    <p class="section-title">Three things<br>worth remembering<br>today.</p>
+    <div id="review-container" class="entries" style="margin-top:64px;"></div>
+  </div>
+
+  <!-- ARCHIVE -->
+  <div id="tab-philosophy" class="tab-panel">
+    <p class="section-title">Philosophy<br>Archive.</p>
+    <div id="phil-filters" class="pill-row" style="margin-top:40px;"></div>
+    <div id="entries-container" class="entries" style="margin-top:0;"></div>
+  </div>
+
+  <!-- GLOSSARY -->
+  <div id="tab-glossary" class="tab-panel">
+    <p class="section-title">Glossary.</p>
+    <div id="glossary-container" style="margin-top:48px;"></div>
+  </div>
+
+  <!-- READING -->
+  <div id="tab-reading" class="tab-panel">
+    <p class="section-title">Reading<br>List.</p>
+    <div id="reading-container" class="book-grid" style="margin-top:48px;"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER IMAGE -->
+<div class="footer-bar">
+  <img src="footer.png" alt="Footer" class="footer-img"
+    onerror="this.style.display='none';document.getElementById('footer-ph').style.display='flex'">
+  <div class="footer-placeholder" id="footer-ph" style="display:none;">
+    <span>footer.png</span>
+    <span>full-width · upload to github root</span>
   </div>
 </div>
 
-<!-- App -->
-<div id="app">
-  <header>
-    <div style="display:flex;align-items:center;gap:24px;">
-      <div class="header-brand">
-        Commonplace
-        <span class="header-beta">Beta</span>
-      </div>
-      <nav>
-        <button class="active" onclick="switchTab('philosophy', this)">Philosophy</button>
-        <button onclick="switchTab('glossary', this)">Glossary</button>
-        <button onclick="switchTab('reading', this)">Reading List</button>
-      </nav>
-    </div>
-    <div class="header-user">
-      <img class="avatar" id="user-avatar" src="" alt="">
-      <span id="user-name"></span>
-      <button class="sign-out-btn" onclick="signOut()">sign out</button>
-    </div>
-  </header>
+<!-- FAB -->
+<button class="fab" onclick="openModal()">Leave a trace</button>
 
-  <main>
-    <div class="stats">
-      <div class="stat-card">
-        <div class="stat-label">Insights</div>
-        <div class="stat-value" id="stat-entries">0</div>
-        <div class="stat-sub">recorded</div>
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">Record an insight</div></div>
+    <div class="modal-body">
+      <div class="field"><label>Highlight / Quote</label><textarea id="q-highlight" placeholder="The passage that stopped you…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Book</label><input id="q-book" list="books-list" placeholder="Title — Author" autocomplete="off"><datalist id="books-list"></datalist></div>
+        <div class="field"><label>Page</label><input id="q-page" placeholder="p.000"></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Terms</div>
-        <div class="stat-value" id="stat-terms">0</div>
-        <div class="stat-sub">in glossary</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Reading List</div>
-        <div class="stat-value" id="stat-books">0</div>
-        <div class="stat-sub">to read</div>
-      </div>
-    </div>
-
-    <!-- Philosophy Tab -->
-    <div id="tab-philosophy" class="tab active">
-      <div class="section-header">
-        <div class="section-title">Philosophy Archive</div>
-        <div class="section-meta" id="phil-updated"></div>
-      </div>
-      <div class="filter-bar" id="phil-filters"></div>
-      <div class="entries-grid" id="entries-container">
-        <div class="empty">
-          <div class="empty-glyph">∅</div>
-          <h3>No insights yet</h3>
-          <p>Chat with books in Claude, say "记录"<br>and insights will appear here.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Glossary Tab -->
-    <div id="tab-glossary" class="tab">
-      <div class="section-header">
-        <div class="section-title">Glossary</div>
-        <div class="section-meta" id="gloss-count"></div>
-      </div>
-      <div id="glossary-container">
-        <div class="empty">
-          <div class="empty-glyph">α</div>
-          <h3>Glossary is empty</h3>
-          <p>Claude will populate terms here<br>as you discuss ideas from books.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Reading List Tab -->
-    <div id="tab-reading" class="tab">
-      <div class="section-header">
-        <div class="section-title">Reading List</div>
-        <div class="section-meta" id="reading-count"></div>
-      </div>
-      <div class="book-list" id="reading-container">
-        <div class="empty">
-          <div class="empty-glyph">☽</div>
-          <h3>Reading list is empty</h3>
-          <p>Claude will recommend books here<br>based on what you're reading.</p>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- FAB -->
-  <button class="fab" onclick="openModal()" title="Quick Capture">+</button>
-
-  <!-- Quick Capture Modal -->
-  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
-    <div class="modal">
-      <div class="modal-handle"></div>
-      <div class="modal-title">Quick Capture</div>
-
-      <div class="field">
-        <label>Book</label>
-        <input id="q-book" type="text" placeholder="底层逻辑 — 刘润" list="books-list">
-        <datalist id="books-list"></datalist>
-      </div>
-
-      <div class="field">
-        <label>Highlight · the idea that struck you</label>
-        <textarea id="q-highlight" placeholder="The sentence or passage that stopped you…"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Resonance · why it hit you</label>
-        <textarea id="q-resonance" placeholder="This reminds me of…  /  This explains why…"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Application · how you'll use it</label>
-        <textarea id="q-application" placeholder="Next time I face X, I will…"></textarea>
-      </div>
-
-      <div class="modal-row">
-        <div class="field">
-          <label>Page (optional)</label>
-          <input id="q-page" type="text" placeholder="p.165">
-        </div>
-        <div class="field">
-          <label>Value domain</label>
+      <div class="field"><label>Why it hit you</label><textarea id="q-resonance" placeholder="Why did this matter right now?"></textarea></div>
+      <div class="field"><label>How you'll use it</label><textarea id="q-application" placeholder="A concrete application…"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Value tag</label>
           <select id="q-tag">
             <option value="Personal Growth">Personal Growth</option>
             <option value="Thinking Patterns">Thinking Patterns</option>
-            <option value="Right & Wrong">Right &amp; Wrong</option>
+            <option value="Right & Wrong">Right & Wrong</option>
             <option value="Boundaries">Boundaries</option>
             <option value="Social Cooperation">Social Cooperation</option>
             <option value="Business Logic">Business Logic</option>
             <option value="Life Choices">Life Choices</option>
-            <option value="Wealth & Money">Wealth &amp; Money</option>
+            <option value="Wealth & Money">Wealth & Money</option>
           </select>
         </div>
-      </div>
-
-      <div class="modal-row">
-        <div class="field">
-          <label>My stance</label>
+        <div class="field"><label>Reaction</label>
           <select id="q-reaction">
             <option value="agree">Agree</option>
             <option value="partially agree">Partially agree</option>
@@ -1206,7 +469,6 @@ main {
           </select>
         </div>
       </div>
-
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
         <button class="btn-save" id="btn-save" onclick="saveEntry()">Save to archive</button>
@@ -1217,259 +479,205 @@ main {
 </div>
 
 <script>
-// ── Notion-powered, no login required ──
-// Data flows: Notion DB → /api/notion (Vercel) → this page
-
 const API = '/api/notion';
+let data = { entries:[], glossary:[], reading:[], review:[] };
+let activeTag = 'all';
 
-let data = { entries: [] };
-let activeTagFilter = 'all';
-
-/* ── Boot ── */
 window.onload = async () => {
-  hide('login-screen');
-  hide('loading');
-  show('app');
-  document.getElementById('user-name').textContent = 'My Archive';
-  await loadAllData();
+  await loadAll();
   renderAll();
+  document.getElementById('loading').style.display = 'none';
 };
 
-/* ── Data ── */
-async function loadAllData() {
-  show('loading');
+async function loadAll() {
   try {
     const r = await fetch(API);
     if (!r.ok) throw new Error(r.status);
-    const json = await r.json();
-    data.entries = json.entries || [];
-    // derive books_read list from entries
+    const j = await r.json();
+    data.entries  = j.entries  || [];
+    data.glossary = j.glossary || [];
+    data.reading  = j.reading  || [];
+    data.review   = j.review   || [];
     data.books_read = [...new Set(data.entries.map(e => e.book).filter(Boolean))];
-  } catch(e) {
-    console.error('loadAllData:', e);
-    data.entries = [];
-  } finally {
-    hide('loading');
-  }
+  } catch(e) { console.error(e); }
 }
 
-function signIn()  { /* no-op — no login needed */ }
-function signOut() { /* no-op */ }
-
-/* ── Render ── */
 function renderAll() {
-  renderStats();
-  renderPhilosophy();
-  renderGlossary();
-  renderReadingList();
+  renderStats(); renderReview(); renderPhilosophy(); renderGlossary(); renderReadingList();
+}
+
+function animateCount(el, target, duration) {
+  const start = performance.now();
+  const from = 0;
+  function step(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(from + (target - from) * ease);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
 function renderStats() {
-  const entries = data.entries?.length || 0;
-  const books   = data.books_read?.length || 0;
-  const tags    = new Set(data.entries?.map(e => e.value_tag).filter(Boolean)).size || 0;
-  document.getElementById('stat-entries').textContent = entries;
-  document.getElementById('stat-terms').textContent   = tags;
-  document.getElementById('stat-books').textContent   = books;
+  const targets = [
+    { id:'stat-entries', val: data.entries.length || 0 },
+    { id:'stat-terms',   val: data.glossary.length || 0 },
+    { id:'stat-books',   val: (data.books_read||[]).length || 0 },
+  ];
+  targets.forEach(({ id, val }, i) => {
+    const el = document.getElementById(id);
+    setTimeout(() => animateCount(el, val, 900), i * 120);
+  });
 }
 
-function countTerms() { return 0; }
+function entryHTML(e) {
+  return `<div class="entry anim">
+    <div>
+      <span class="entry-tag">${esc(e.value_tag||'')}</span>
+      <span class="entry-src">${esc(e.book||'')}${e.page?'<br>'+e.page:''}</span>
+    </div>
+    <div>
+      <div class="entry-quote">${esc(e.quote_or_idea||e.title||'')}</div>
+      ${e.resonance?`<p class="entry-body-text" style="font-style:italic;">${esc(e.resonance)}</p>`:''}
+      ${e.personal_application?`<p class="entry-body-text">${esc(e.personal_application)}</p>`:''}
+      ${e.question?`<p class="entry-q">↳ ${esc(e.question)}</p>`:''}
+    </div>
+    <div class="entry-right">
+      <span class="entry-date">${esc(e.date||'')}</span>
+      ${e.notion_url?`<a href="${e.notion_url}" target="_blank" class="entry-link">Notion ↗</a>`:''}
+    </div>
+  </div>`;
+}
+
+function renderReview() {
+  const items = data.review || [];
+  document.getElementById('review-container').innerHTML =
+    items.length ? items.map(entryHTML).join('') : emptyHTML();
+}
 
 function renderPhilosophy() {
   const entries = data.entries || [];
-  if (!entries.length) return;
-
-  document.getElementById('phil-updated').textContent =
-    entries[0]?.date ? 'last updated ' + entries[0].date : '';
-
   const tags = [...new Set(entries.map(e => e.value_tag).filter(Boolean))];
-  const bar  = document.getElementById('phil-filters');
-  bar.innerHTML =
-    `<button class="filter-btn ${activeTagFilter==='all'?'active':''}" onclick="filterTag('all')">All</button>` +
-    tags.map(t =>
-      `<button class="filter-btn ${activeTagFilter===t?'active':''}" onclick="filterTag('${t}')">${t}</button>`
-    ).join('');
-
-  const filtered = activeTagFilter === 'all'
-    ? entries
-    : entries.filter(e => e.value_tag === activeTagFilter);
-
-  const c = document.getElementById('entries-container');
-  if (!filtered.length) {
-    c.innerHTML = `<div class="empty"><div class="empty-glyph">∅</div><h3>No entries in this category</h3></div>`;
-    return;
-  }
-
-  c.innerHTML = filtered.map(e => `
-    <div class="entry-card">
-      <div class="entry-top">
-        <div class="entry-quote">${esc(e.quote_or_idea || e.title || '')}</div>
-      </div>
-      ${e.resonance
-        ? `<div class="entry-application" style="font-style:italic;color:var(--slate);">${esc(e.resonance)}</div>` : ''}
-      ${e.personal_application
-        ? `<div class="entry-application">${esc(e.personal_application)}</div>` : ''}
-      ${e.question
-        ? `<div class="entry-application" style="color:var(--stone);font-size:13px;">Q: ${esc(e.question)}</div>` : ''}
-      <div class="entry-meta">
-        ${e.value_tag ? `<span class="tag">${esc(e.value_tag)}</span>` : ''}
-        <span class="entry-source">${esc(e.book||'')}${e.page?' · '+e.page:''}${e.date?' · '+e.date:''}</span>
-        ${e.notion_url ? `<a href="${e.notion_url}" target="_blank" style="font-size:11px;color:var(--muted);text-decoration:none;margin-left:auto;">↗ Notion</a>` : ''}
-      </div>
-    </div>
-  `).join('');
+  document.getElementById('phil-filters').innerHTML =
+    `<button class="pill ${activeTag==='all'?'active':''}" onclick="filterTag('all')">All</button>` +
+    tags.map(t=>`<button class="pill ${activeTag===t?'active':''}" onclick="filterTag('${esc(t)}')">${esc(t)}</button>`).join('');
+  const filtered = activeTag==='all' ? entries : entries.filter(e=>e.value_tag===activeTag);
+  document.getElementById('entries-container').innerHTML =
+    filtered.length ? filtered.map(entryHTML).join('') : emptyHTML();
 }
 
-function filterTag(tag) {
-  activeTagFilter = tag;
-  renderPhilosophy();
-}
+function filterTag(tag) { activeTag = tag; renderPhilosophy(); }
 
 function renderGlossary() {
-  const g = data.glossary;
-  if (!g?.categories) return;
-  const total = countTerms();
-  document.getElementById('gloss-count').textContent = total + ' terms';
-  const cats = Object.entries(g.categories).filter(([,arr]) => arr.length > 0);
-  if (!cats.length) return;
-  document.getElementById('glossary-container').innerHTML = cats.map(([cat, terms]) => `
-    <div class="glossary-category">
-      <div class="cat-title">${esc(cat)}</div>
+  const terms = data.glossary || [];
+  if (!terms.length) { document.getElementById('glossary-container').innerHTML = emptyHTML(); return; }
+  const groups = {};
+  terms.forEach(t => { const c=t.category||'Other'; if(!groups[c]) groups[c]=[]; groups[c].push(t); });
+  document.getElementById('glossary-container').innerHTML = Object.entries(groups).map(([cat,items])=>`
+    <div class="glossary-group">
+      <div class="glossary-group-title">${esc(cat)}</div>
       <div class="glossary-grid">
-        ${terms.map(t => `
-          <div class="term-card">
-            <div class="term-en">${esc(t.en||'')}</div>
-            <div class="term-zh">${esc(t.zh||'')}</div>
-            <div class="term-def">${esc(t.definition_zh||t.definition_en||'')}</div>
-            ${t.source_book?`<div class="term-source">${esc(t.source_book)}${t.page?' '+t.page:''}</div>`:''}
-          </div>`).join('')}
+        ${items.map(t=>`<div class="term-card">
+          <div class="term-en">${esc(t.term||'')}</div>
+          <div class="term-zh">${esc(t.term_zh||'')}</div>
+          <div class="term-def">${esc(t.definition_zh||t.definition_en||'')}</div>
+          ${t.source_book?`<div class="term-src">${esc(t.source_book)}${t.page?' · '+t.page:''}</div>`:''}
+        </div>`).join('')}
       </div>
     </div>`).join('');
 }
 
 function renderReadingList() {
-  const r = data.reading;
-  if (!r?.books?.length) return;
-  document.getElementById('reading-count').textContent = r.books.length + ' books';
-  document.getElementById('reading-container').innerHTML = r.books.map((b, i) => `
-    <div class="book-card" style="animation:fadeUp 0.4s ${i*0.05}s ease both;">
-      <div class="book-spine">${esc((b.title||'?')[0])}</div>
-      <div>
-        <div class="book-title">${esc(b.title||'')}${b.zh_title?` <span style="font-size:13px;color:var(--steel);">· ${esc(b.zh_title)}</span>`:''}</div>
-        <div class="book-author">${esc(b.author||'')}${b.language?' · '+esc(b.language):''}</div>
-        ${b.why_recommended?`<div class="book-why">${esc(b.why_recommended)}</div>`:''}
-        <div class="book-tags">
-          ${b.priority?`<span class="tag ${pcls(b.priority)}">${esc(b.priority)}</span>`:''}
-          <span class="tag ${b.status==='未读'||b.status==='unread'?'status-unread':'status-reading'}">${esc(b.status||'unread')}</span>
-          ${b.category?`<span class="tag">${esc(b.category)}</span>`:''}
-          ${b.triggered_by?`<span class="entry-source">via ${esc(b.triggered_by)}</span>`:''}
-        </div>
+  const books = data.reading || [];
+  if (!books.length) { document.getElementById('reading-container').innerHTML = emptyHTML(); return; }
+  document.getElementById('reading-container').innerHTML = books.map(b=>`
+    <div class="book-card">
+      <div class="book-letter">${esc((b.title||'?')[0])}</div>
+      <div class="book-title">${esc(b.title||'')}</div>
+      ${b.zh_title?`<div class="book-zh">${esc(b.zh_title)}</div>`:''}
+      <div class="book-author">${esc(b.author||'')}</div>
+      ${b.why_recommended?`<div class="book-why">${esc(b.why_recommended)}</div>`:''}
+      <div class="book-badges">
+        ${b.priority?`<span class="badge badge-high">${esc(b.priority)}</span>`:''}
+        <span class="badge ${b.status==='在读'?'badge-reading':''}">${esc(b.status||'未读')}</span>
       </div>
     </div>`).join('');
 }
 
-/* ── Tab switching ── */
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  btn.classList.add('active');
+const TABS = ['review','philosophy','glossary','reading'];
+
+function switchNav(name, el) {
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  el.classList.add('active');
+  activateTab(name);
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.classList.toggle('active', p.dataset.tab===name);
+  });
 }
 
-/* ── Quick Capture Modal ── */
+function switchPill(name, btn) {
+  document.querySelectorAll('.pill[data-tab]').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  activateTab(name);
+  document.querySelectorAll('.nav-links a').forEach((a,i)=>{
+    a.classList.toggle('active', TABS[i]===name);
+  });
+}
+
+function activateTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const panel = document.getElementById('tab-'+name);
+  if (panel) panel.classList.add('active');
+}
+
 function openModal() {
   const dl = document.getElementById('books-list');
   dl.innerHTML = '';
-  (data.books_read || []).forEach(b => {
-    const o = document.createElement('option'); o.value = b; dl.appendChild(o);
-  });
+  (data.books_read||[]).forEach(b=>{ const o=document.createElement('option'); o.value=b; dl.appendChild(o); });
   document.getElementById('modal-overlay').classList.add('open');
-  setTimeout(() => document.getElementById('q-highlight').focus(), 100);
+  setTimeout(()=>document.getElementById('q-highlight').focus(), 100);
 }
-
 function closeModal() {
   document.getElementById('modal-overlay').classList.remove('open');
   document.getElementById('save-status').textContent = '';
-  ['q-book','q-highlight','q-resonance','q-application','q-page'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  const btn = document.getElementById('btn-save');
-  btn.disabled = false;
-  btn.textContent = 'Save to archive';
+  ['q-book','q-highlight','q-resonance','q-application','q-page'].forEach(id=>document.getElementById(id).value='');
+  const btn=document.getElementById('btn-save');
+  btn.disabled=false; btn.textContent='Save to archive';
 }
-
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModal();
-}
+function closeModalOutside(e) { if(e.target===document.getElementById('modal-overlay')) closeModal(); }
 
 async function saveEntry() {
   const highlight = document.getElementById('q-highlight').value.trim();
-  if (!highlight) {
-    document.getElementById('save-status').textContent = '⚠ Please fill in the highlight';
-    return;
-  }
-  const btn    = document.getElementById('btn-save');
-  const status = document.getElementById('save-status');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
-
+  if (!highlight) { document.getElementById('save-status').textContent='⚠ Fill in the highlight'; return; }
+  const btn=document.getElementById('btn-save'), status=document.getElementById('save-status');
+  btn.disabled=true; btn.textContent='Saving…';
   const entry = {
-    title:                document.getElementById('q-highlight').value.trim().slice(0, 80),
-    book:                 document.getElementById('q-book').value.trim() || 'Unknown',
-    page:                 document.getElementById('q-page').value.trim(),
-    quote_or_idea:        highlight,
-    resonance:            document.getElementById('q-resonance').value.trim(),
+    title: highlight.slice(0,80),
+    book:  document.getElementById('q-book').value.trim()||'Unknown',
+    page:  document.getElementById('q-page').value.trim(),
+    quote_or_idea: highlight,
+    resonance:     document.getElementById('q-resonance').value.trim(),
     personal_application: document.getElementById('q-application').value.trim(),
-    value_tag:            document.getElementById('q-tag').value,
-    date:                 new Date().toISOString().split('T')[0],
+    value_tag: document.getElementById('q-tag').value,
+    date: new Date().toISOString().split('T')[0],
   };
-
   try {
-    const r = await fetch(API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(entry),
-    });
+    const r = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(entry)});
     if (!r.ok) throw new Error(r.status);
-    // refresh data from Notion
-    await loadAllData();
-    renderAll();
-    status.textContent = '✓ saved to Notion';
-    btn.textContent = 'Save to archive';
+    await loadAll(); renderAll();
+    status.textContent='✓ saved';
+    btn.textContent='Save to archive';
     setTimeout(closeModal, 1200);
   } catch(e) {
-    console.error(e);
-    status.textContent = '✗ save failed — please retry';
-    btn.textContent = 'Save to archive';
-    btn.disabled = false;
+    status.textContent='✗ failed — retry';
+    btn.textContent='Save to archive';
+    btn.disabled=false;
   }
 }
 
-/* ── Helpers ── */
-function show(id) {
-  const el = document.getElementById(id);
-  if (id === 'app') el.style.display = 'block';
-  else el.style.display = '';
-}
-function hide(id) { document.getElementById(id).style.display = 'none'; }
-function esc(s) {
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function rcls(r) {
-  return { agree:'reaction-agree','partially agree':'reaction-partial',
-           disagree:'reaction-disagree','want to test':'reaction-test' }[r] || 'reaction-test';
-}
-function rlbl(r) {
-  return { agree:'agree','partially agree':'partial',
-           disagree:'disagree','want to test':'testing' }[r] || (r||'');
-}
-function pcls(p) {
-  if (!p) return '';
-  if (p.includes('高') || p.includes('⭐⭐⭐') || p.toLowerCase().includes('high')) return 'priority-high';
-  if (p.includes('中') || p.includes('⭐⭐') || p.toLowerCase().includes('med')) return 'priority-medium';
-  return '';
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function emptyHTML() {
+  return `<div class="empty"><div class="empty-glyph">∅</div><p class="empty-label">No entries yet</p></div>`;
 }
 </script>
 </body>
